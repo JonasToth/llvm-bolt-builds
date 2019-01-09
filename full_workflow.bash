@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# REQUIREMENT: LLVM Monorepo is setup and functional (see setup_llvm_repo.bash)
+
 # Create vanilla build of LLVM toolchain, comparitivly slow, but contains the necessary tools we use (BOLT inclusively)
 ./build_stage1.bash
 
