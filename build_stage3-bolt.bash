@@ -1,6 +1,7 @@
 #!/bin/bash
 
 BASE_DIR=$(pwd)
+BOLT_INSTALL="$(pwd)/build-bolt/install/bin"
 CPATH="$(pwd)/stage2-prof-use-lto-reloc/install/bin"
 
 mkdir -p stage3-bolt || (echo "Could not create stage3-bolt directory"; exit 1)
@@ -29,19 +30,19 @@ cmake 	-G Ninja \
 	../../llvm-project/llvm || (echo "Could not configure project!"; exit 1)
 
 echo
-echo "== Start Build"
-# perf record -o ../perf.data -e cycles:u -j any,u -- ninja clang || (echo "Could not build project for training!"; exit 1)
+echo "== Start Training Build"
+perf record -o ../perf.data -e cycles:u -j any,u -- ninja clang || (echo "Could not build project for training!"; exit 1)
 
 cd ..
 
 # Do the bolt-processing of the binary.
-export PATH="${BASE_DIR}/stage2-prof-use/install/bin:$PATH"
+export PATH="${BOLT_INSTALL}:$PATH"
 
-echo "Bolting Clang"
+echo "* Bolting Clang"
 perf2bolt ${CPATH}/clang-7 \
 	-p perf.data \
 	-o clang-7.fdata \
-	-w clang-7.yaml
+    -w clang-7.yaml || (echo "Could not convert perf-data to bolt for clang-7"; exit 1)
 
 llvm-bolt ${CPATH}/clang-7 \
 	-o ${CPATH}/clang-7.bolt \
@@ -52,13 +53,13 @@ llvm-bolt ${CPATH}/clang-7 \
 	-split-all-cold \
 	-dyno-stats \
 	-icf=1 \
-	-use-gnu-stack
+    -use-gnu-stack || (echo "Could not optimize binary for clang-7"; exit 1)
 
-echo "Bolting LLD"
+echo "* Bolting LLD"
 perf2bolt ${CPATH}/lld \
 	-p perf.data \
 	-o lld.fdata \
-	-w lld.yaml
+    -w lld.yaml || (echo "Could not convert perf-data to bolt for lld-7"; exit 1)
 
 llvm-bolt ${CPATH}/lld \
 	-o ${CPATH}/lld.bolt \
@@ -69,4 +70,4 @@ llvm-bolt ${CPATH}/lld \
 	-split-all-cold \
 	-dyno-stats \
 	-icf=1 \
-	-use-gnu-stack
+    -use-gnu-stack || (echo "Could not optimize binary for lld-7"; exit 1)

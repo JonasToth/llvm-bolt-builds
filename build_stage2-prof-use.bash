@@ -24,7 +24,7 @@ cmake 	-G Ninja \
 	-DLLVM_PARALLEL_LINK_JOBS="$(nproc)" \
 	-DLLVM_POLLY_BUILD=ON \
 	-DLLVM_PROFDATA_FILE=${BASE_DIR}/stage2-prof-generate/profiles/clang.prof \
-	-DLLVM_TARGETS_TO_BUILD="X86;AArch64" \
+	-DLLVM_TARGETS_TO_BUILD="X86" \
 	-DLLVM_TOOL_CLANG_BUILD=ON \
 	-DLLVM_TOOL_CLANG_TOOLS_EXTRA_BUILD=OFF \
 	-DLLVM_TOOL_COMPILER_RT_BUILD=OFF \
@@ -37,4 +37,4 @@ ninja || (echo "Could not build project!"; exit 1)
 
 echo
 echo "== Install to $(pwd)/install"
-ninja install
+ninja install || (echo "Could not install project!"; exit 1)

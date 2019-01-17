@@ -35,5 +35,5 @@ ninja || (echo "Could not build project for training!"; exit 1)
 
 echo
 echo "== Merge Profile data"
-cd profiles/
-${BASE_DIR}/stage1/install/bin/llvm-profdata merge -output=clang.prof *.profraw
+cd ../stage2-prof-generate/profiles/ || (echo "Could not switch to profile directory, inconsistent directory layout detected!"; exit 1)
+${BASE_DIR}/stage1/install/bin/llvm-profdata merge -output=clang.prof *.profraw || (echo "Could not merge profile-data!"; exit 1)

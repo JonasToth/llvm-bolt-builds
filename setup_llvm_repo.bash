@@ -8,17 +8,15 @@ if [ $# -ne 0 ]; then
     exit 1
 fi
 
+echo "== Checking for existence of 'llvm-project' directory"
+if [ -d "llvm-project" ]; then
+  echo "* 'llvm-project' already exists. Stopping"
+  exit 0
+fi
+
 echo "== Cloning git-monorepo for LLVM"
-git clone https://github.com/llvm-project/llvm-project-20170507.git llvm-project
+# Old mono-repo.
+# git clone https://github.com/llvm-project/llvm-project-20170507.git llvm-project
 
-echo "== Choosing right revision (as required by facebook)"
-cd llvm-project
-git checkout -b bolt_experiment 55bdff2ae913bf5af541654e17dd0c9a337536e2
-
-echo "== Getting llvm-bolt from facebookincubator"
-cd llvm/tools/
-git clone https://github.com/facebookincubator/BOLT llvm-bolt
-
-echo "== Patching LLVM"
-cd ..
-patch -p 1 < tools/llvm-bolt/llvm.patch 
+# New mono-repo.
+git clone https://github.com/llvm/llvm-project.git
