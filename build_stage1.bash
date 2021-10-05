@@ -4,16 +4,16 @@ mkdir -p stage1 || (echo "Could not create stage1 directory"; exit 1)
 cd stage1
 
 echo "== Configure Build"
-echo "== Build with clang-7 and lld-7"
+echo "== Build with clang and lld host compiler"
 
-CC=clang-7 CXX=clang++-7 LD=lld-7 \
+CC=clang CXX=clang++ LD=lld \
 cmake 	-G Ninja \
 	-DBUILD_SHARED_LIBS=OFF \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DCMAKE_INSTALL_PREFIX="$(pwd)/install" \
 	-DCLANG_ENABLE_ARCMT=OFF \
 	-DCLANG_ENABLE_STATIC_ANALYZER=OFF \
-	-DCLANG_VENDOR="LogMeIn" \
+	-DCLANG_VENDOR="CachyOS" \
 	-DLLVM_ENABLE_LLD=ON \
 	-DLLVM_ENABLE_PROJECTS="clang;lld;compiler-rt" \
 	-DLLVM_PARALLEL_COMPILE_JOBS="$(nproc)"\

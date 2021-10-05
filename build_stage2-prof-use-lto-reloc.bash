@@ -1,6 +1,5 @@
 #!/bin/bash
 
-BASE_DIR=$(pwd)
 CPATH="$(pwd)/stage1/install/bin"
 
 mkdir -p stage2-prof-use-lto-reloc || (echo "Could not create stage2-prof-use-lto-reloc directory"; exit 1)
@@ -18,9 +17,9 @@ cmake 	-G Ninja \
 	-DCMAKE_INSTALL_PREFIX="$(pwd)/install" \
 	-DCLANG_ENABLE_ARCMT=OFF \
 	-DCLANG_ENABLE_STATIC_ANALYZER=OFF \
-	-DCLANG_VENDOR="LogMeIn" \
+	-DCLANG_VENDOR="CachyOS" \
 	-DLLVM_ENABLE_LLD=ON \
-	-DLLVM_ENABLE_LTO=Full \
+	-DLLVM_ENABLE_LTO=THIN \
 	-DLLVM_ENABLE_PROJECTS="clang;lld" \
 	-DLLVM_PARALLEL_COMPILE_JOBS="$(nproc)"\
 	-DLLVM_PARALLEL_LINK_JOBS="$(nproc)" \

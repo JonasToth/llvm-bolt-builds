@@ -16,7 +16,7 @@ cmake 	-G Ninja \
 	-DCMAKE_INSTALL_PREFIX="$(pwd)/install" \
 	-DCLANG_ENABLE_ARCMT=OFF \
 	-DCLANG_ENABLE_STATIC_ANALYZER=OFF \
-	-DCLANG_VENDOR="LogMeIn" \
+	-DCLANG_VENDOR="CachyOS" \
 	-DLLVM_ENABLE_LLD=ON \
 	-DLLVM_ENABLE_PROJECTS="clang;lld;compiler-rt" \
 	-DLLVM_PARALLEL_COMPILE_JOBS="$(nproc)"\
@@ -39,14 +39,14 @@ cd ..
 export PATH="${BOLT_INSTALL}:$PATH"
 
 echo "* Bolting Clang"
-perf2bolt ${CPATH}/clang-7 \
+perf2bolt ${CPATH}/clang-13 \
 	-p perf.data \
-	-o clang-7.fdata \
-    -w clang-7.yaml || (echo "Could not convert perf-data to bolt for clang-7"; exit 1)
+	-o clang-13.fdata \
+    -w clang-13.yaml || (echo "Could not convert perf-data to bolt for clang-7"; exit 1)
 
-llvm-bolt ${CPATH}/clang-7 \
-	-o ${CPATH}/clang-7.bolt \
-	-b clang-7.yaml \
+llvm-bolt ${CPATH}/clang-13 \
+	-o ${CPATH}/clang-13.bolt \
+	-b clang-13.yaml \
 	-reorder-blocks=cache+ \
 	-reorder-functions=hfsort+ \
 	-split-functions=3 \
