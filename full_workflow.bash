@@ -3,7 +3,7 @@
 SCRIPT_PATH=$(pwd)
 # FIXME: Working paths are not correct!
 cd ../
-echo "Cloniing LLVM REPO"
+echo "Cloning LLVM REPO"
 $SCRIPT_PATH/setup_llvm_repo.bash || (echo "Setting up mono-repo failed!"; exit 1)
 cd ../
 echo  "build bolt"

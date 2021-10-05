@@ -28,3 +28,6 @@ echo "== Install 'llvm-bolt'"
 ninja install-llvm-bolt install-perf2bolt install-merge-fdata \
       install-llvm-boltdiff install-bolt_rt
 || (echo "Could not install 'llvm-bolt'"; exit 1)
+
+
+cd $SCRIPT_PATH
