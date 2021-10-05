@@ -7,11 +7,11 @@ echo "Cloning LLVM REPO"
 $SCRIPT_PATH/setup_llvm_repo.bash || (echo "Setting up mono-repo failed!"; exit 1)
 cd ../
 echo  "build bolt"
-./build_bolt.bash || (echo "Building llvm-bolt separatly failed!"; exit 1)
+$SCRIPT_PATH/build_bolt.bash || (echo "Building llvm-bolt separatly failed!"; exit 1)
 echo "checkout to your choose_latest_release"
 cd ../
 $SCRIPT_PATH/choose_latest_release.bash || (echo "Switching to latest stable LLVM-Release failed!"; exit 1)
-
+cd $SCRIPT_PATH
 echo "Create vanilla build of LLVM toolchain, comparitivly slow, but contains the necessary tools we use (without BOLT)"
 ./build_stage1.bash || (echo "Building Stage1-Toolchain failed!"; exit 1)
 
