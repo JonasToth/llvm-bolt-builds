@@ -18,7 +18,7 @@ cmake 	-G Ninja \
 	-DCLANG_ENABLE_STATIC_ANALYZER=OFF \
 	-DCLANG_VENDOR="CachyOS" \
 	-DLLVM_ENABLE_LLD=ON \
-	-DLLVM_ENABLE_PROJECTS="clang;lld;compiler-rt" \
+	-DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;compiler-rt;openmp;polly;lld;lldb" \
 	-DLLVM_PARALLEL_COMPILE_JOBS="$(nproc)"\
 	-DLLVM_PARALLEL_LINK_JOBS="$(nproc)" \
 	-DLLVM_POLLY_BUILD=ON \

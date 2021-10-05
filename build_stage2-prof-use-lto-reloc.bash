@@ -20,7 +20,7 @@ cmake 	-G Ninja \
 	-DCLANG_VENDOR="CachyOS" \
 	-DLLVM_ENABLE_LLD=ON \
 	-DLLVM_ENABLE_LTO=THIN \
-	-DLLVM_ENABLE_PROJECTS="clang;lld" \
+	-DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;compiler-rt;openmp;polly;lld;lldb" \
 	-DLLVM_PARALLEL_COMPILE_JOBS="$(nproc)"\
 	-DLLVM_PARALLEL_LINK_JOBS="$(nproc)" \
 	-DLLVM_POLLY_BUILD=ON \
