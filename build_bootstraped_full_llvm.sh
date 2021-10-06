@@ -12,16 +12,16 @@ OCKER=$(tput setaf 3)
 WHITE=$(tput setaf 15)
 
 echo "${BOLD}${CYAN}=== This script generates a bootstrapped, everything LLVM compiler${WHITE}${OFFBOLD}"
-echo 
+echo
 
-cc_host=gcc-8
-cxx_host=g++-8
-ld_host=gold
+cc_host=clang
+cxx_host=clang++
+ld_host=ldd
 
 repo_dir="/fast_data2/llvm-project"
 build_dir="/fast_data2/llvm-native-pgo"
 enabled_projects="clang;clang-tools-extra;lld;compiler-rt;libunwind;libcxx;libcxxabi"
-install_prefix="/opt"
+install_prefix="/usr"
 install_destdir="/fast_data2/bootstrapped_result"
 echo "${RED}--- general settings${WHITE}"
 echo " * Repo directory: ${BOLD}${repo_dir}${OFFBOLD}"

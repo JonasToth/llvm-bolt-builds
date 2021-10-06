@@ -37,4 +37,4 @@ cmake 	-G Ninja \
 
 echo
 echo "== Start Build"
-/usr/bin/time --format "clang %e seconds" ninja clang || (echo "Could not build project!"; exit 1)
+time --format "clang %e seconds" ninja || (echo "Could not build project!"; exit 1)

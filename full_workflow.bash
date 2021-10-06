@@ -5,9 +5,11 @@ SCRIPT_PATH=$(pwd)
 cd ../
 echo "Cloning LLVM REPO"
 $SCRIPT_PATH/setup_llvm_repo.bash || (echo "Setting up mono-repo failed!"; exit 1)
+cd $SCRIPT_PATH
 cd ../
 echo  "build bolt"
 $SCRIPT_PATH/build_bolt.bash || (echo "Building llvm-bolt separatly failed!"; exit 1)
+cd $SCRIPT_PATH
 echo "checkout to your choose_latest_release"
 cd ../
 $SCRIPT_PATH/choose_latest_release.bash || (echo "Switching to latest stable LLVM-Release failed!"; exit 1)

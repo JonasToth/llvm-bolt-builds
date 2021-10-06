@@ -15,12 +15,6 @@ For them to function it expects the following directory structure:
 $ cd SomeBaseDir/
 $ # get these files here somehow, git clone or whatever distribution method
 
-$ # Prepare the build directory containing multiple build-stages and the scripts
-$ mkdir multistage-optimized-build/
-$ cd multistage-optimized-build/
-$ git clone ssh://git@bitbucket.ops.expertcity.com:7999/~jtoth/fast-llvm.git
-$ cd fast-llvm
-
 $ # This will setup the mono-repo, built llvm-bolt separatly and then
 $ # start a multi-stage LLVM build with the latest stable release.
 $ ./full_workflow.bash

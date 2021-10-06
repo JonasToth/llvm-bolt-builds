@@ -7,7 +7,7 @@ if [ -d "llvm-project" ]; then
   exit 0
 fi
 
-echo "Coning llvm-project"
+echo "Cloning llvm-project"
 
 git clone https://github.com/llvm/llvm-project.git
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "== Choosing latest release (7.x-branch)"
+echo "== Choosing latest release (13.x-branch)"
 cd llvm-project
 
 git checkout release/13.x
