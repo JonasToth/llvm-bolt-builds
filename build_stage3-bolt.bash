@@ -10,7 +10,7 @@ cd stage3-bolt
 echo "== Configure Build"
 echo "== Build with stage2-prof-use-tools -- $CPATH"
 CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
-cmake 	-G Ninja \
+	cmake 	-G Ninja \
 	-DBUILD_SHARED_LIBS=OFF \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DCMAKE_INSTALL_PREFIX="$(pwd)/install" \
@@ -18,10 +18,11 @@ cmake 	-G Ninja \
 	-DCLANG_ENABLE_STATIC_ANALYZER=OFF \
 	-DCLANG_VENDOR="CachyOS" \
 	-DLLVM_ENABLE_LLD=ON \
-	-DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;compiler-rt;lld;lldb" \
+	-DCMAKE_C_FLAGS="-march=native -O3" \
+	-DCMAKE_CXX_FLAGS="-march=native -O3" \
+	-DLLVM_ENABLE_PROJECTS="clang;lld;compiler-rt" \
 	-DLLVM_PARALLEL_COMPILE_JOBS="$(nproc)"\
 	-DLLVM_PARALLEL_LINK_JOBS="$(nproc)" \
-	-DLLVM_POLLY_BUILD=ON \
 	-DLLVM_TARGETS_TO_BUILD="all" \
 	-DLLVM_TOOL_CLANG_BUILD=ON \
 	-DLLVM_TOOL_CLANG_TOOLS_EXTRA_BUILD=OFF \
@@ -42,7 +43,7 @@ echo "* Bolting Clang"
 perf2bolt ${CPATH}/clang-13 \
 	-p perf.data \
 	-o clang-13.fdata \
-    -w clang-13.yaml || (echo "Could not convert perf-data to bolt for clang-7"; exit 1)
+	-w clang-13.yaml || (echo "Could not convert perf-data to bolt for clang-7"; exit 1)
 
 llvm-bolt ${CPATH}/clang-13 \
 	-o ${CPATH}/clang-13.bolt \
@@ -53,13 +54,13 @@ llvm-bolt ${CPATH}/clang-13 \
 	-split-all-cold \
 	-dyno-stats \
 	-icf=1 \
-    -use-gnu-stack || (echo "Could not optimize binary for clang-7"; exit 1)
+	-use-gnu-stack || (echo "Could not optimize binary for clang-7"; exit 1)
 
 echo "* Bolting LLD"
 perf2bolt ${CPATH}/lld \
 	-p perf.data \
 	-o lld.fdata \
-    -w lld.yaml || (echo "Could not convert perf-data to bolt for lld-7"; exit 1)
+	-w lld.yaml || (echo "Could not convert perf-data to bolt for lld-7"; exit 1)
 
 llvm-bolt ${CPATH}/lld \
 	-o ${CPATH}/lld.bolt \
@@ -70,4 +71,4 @@ llvm-bolt ${CPATH}/lld \
 	-split-all-cold \
 	-dyno-stats \
 	-icf=1 \
-    -use-gnu-stack || (echo "Could not optimize binary for lld-7"; exit 1)
+	-use-gnu-stack || (echo "Could not optimize binary for lld-7"; exit 1)

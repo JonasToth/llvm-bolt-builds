@@ -9,6 +9,7 @@ cd stage2-prof-use-lto
 echo "== Configure Build"
 echo "== Build with stage1-tools -- $CPATH"
 
+export LDFLAGS="-Wl,-q"
 CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
 cmake 	-G Ninja \
 	-DBUILD_SHARED_LIBS=OFF \
@@ -16,13 +17,14 @@ cmake 	-G Ninja \
 	-DCMAKE_INSTALL_PREFIX="$(pwd)/install" \
 	-DCLANG_ENABLE_ARCMT=OFF \
 	-DCLANG_ENABLE_STATIC_ANALYZER=OFF \
-	-DCLANG_VENDOR="LogMeIn" \
+	-DCLANG_VENDOR="CachOS" \
 	-DLLVM_ENABLE_LLD=ON \
 	-DLLVM_ENABLE_LTO=THIN \
-	-DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;compiler-rt;lld;lldb" \
+	-DCMAKE_C_FLAGS="-march=native -O3" \
+	-DCMAKE_CXX_FLAGS="-march=native -O3" \
+	-DLLVM_ENABLE_PROJECTS="clang;lld;compiler-rt" \
 	-DLLVM_PARALLEL_COMPILE_JOBS="$(nproc)"\
 	-DLLVM_PARALLEL_LINK_JOBS="$(nproc)" \
-	-DLLVM_POLLY_BUILD=ON \
 	-DLLVM_PROFDATA_FILE=${BASE_DIR}/stage2-prof-generate/profiles/clang.prof \
 	-DLLVM_TARGETS_TO_BUILD="X86" \
 	-DLLVM_TOOL_CLANG_BUILD=ON \

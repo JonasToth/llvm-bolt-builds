@@ -85,30 +85,30 @@ cd ${build_dir}
 echo " - Configuring LLVM"
 
 CC=${cc_host} \
-CXX=${cxx_host} \
-LD=${ld_host} \
-cmake   -G Ninja \
-        -DCMAKE_INSTALL_PREFIX=${install_prefix} \
-        -DLLVM_ENABLE_PROJECTS=${enabled_projects} \
-        -DLLVM_CXX_STD=c++17 \
-        -DCLANG_ENABLE_BOOTSTRAP=ON \
-        -DCLANG_BOOTSTRAP_PASSTHROUGH=${passthrough_args} \
-        -DBOOTSTRAP_CLANG_DEFAULT_CXX_STDLIB=${bs_stdlib} \
-        -DBOOTSTRAP_CLANG_DEFAULT_LINKER=${bs_linker} \
-        -DBOOTSTRAP_CLANG_DEFAULT_RTLIB=${bs_rtlib} \
-        -DBOOTSTRAP_CLANG_DEFAULT_UNWINDLIB=${bs_unwindlib} \
-        -DBOOTSTRAP_COMPILER_RT_USE_LIBCXX=${bs_rtlib_use_libcxx} \
-        -DBOOTSTRAP_LIBCXXABI_USE_COMPILER_RT=${bs_libcxxabi_use_compiler_rt} \
-        -DBOOTSTRAP_LIBCXXABI_USE_LLVM_UNWINDER=${bs_libcxxabi_use_llvm_unwinder} \
-        -DBOOTSTRAP_LIBCXX_USE_COMPILER_RT=${bs_libcxx_use_compiler_rt} \
-        -DBOOTSTRAP_LIBUNWIND_USE_COMPILER_RT=${bs_libunwind_use_compiler_rt} \
-        -DBOOTSTRAP_LLVM_ENABLE_LIBCXX=${bs_llvm_enable_libcxx} \
-        -DBOOTSTRAP_LLVM_ENABLE_LLD=${bs_llvm_enable_lld} \
-        -DBOOTSTRAP_LLVM_ENABLE_LTO=${bs_llvm_enable_lto} \
-        -DBOOTSTRAP_LLVM_ENABLE_MODULES=${bs_llvm_enable_modules} \
-        -DBOOTSTRAP_LLVM_PARALLEL_COMPILE_JOBS=${bs_llvm_parallel_compile} \
-        -DBOOTSTRAP_LLVM_PARALLEL_LINK_JOBS=${bs_llvm_parallel_link} \
-        ${repo_dir}/llvm || (echo "${BOLD}${RED}FAILED TO CONFIGURE BOOTSTRAPPED CLANG${WHITE}${OFFBOLD}"; exit 1)
+  CXX=${cxx_host} \
+  LD=${ld_host} \
+  cmake   -G Ninja \
+  -DCMAKE_INSTALL_PREFIX=${install_prefix} \
+  -DLLVM_ENABLE_PROJECTS=${enabled_projects} \
+  -DLLVM_CXX_STD=c++17 \
+  -DCLANG_ENABLE_BOOTSTRAP=ON \
+  -DCLANG_BOOTSTRAP_PASSTHROUGH=${passthrough_args} \
+  -DBOOTSTRAP_CLANG_DEFAULT_CXX_STDLIB=${bs_stdlib} \
+  -DBOOTSTRAP_CLANG_DEFAULT_LINKER=${bs_linker} \
+  -DBOOTSTRAP_CLANG_DEFAULT_RTLIB=${bs_rtlib} \
+  -DBOOTSTRAP_CLANG_DEFAULT_UNWINDLIB=${bs_unwindlib} \
+  -DBOOTSTRAP_COMPILER_RT_USE_LIBCXX=${bs_rtlib_use_libcxx} \
+  -DBOOTSTRAP_LIBCXXABI_USE_COMPILER_RT=${bs_libcxxabi_use_compiler_rt} \
+  -DBOOTSTRAP_LIBCXXABI_USE_LLVM_UNWINDER=${bs_libcxxabi_use_llvm_unwinder} \
+  -DBOOTSTRAP_LIBCXX_USE_COMPILER_RT=${bs_libcxx_use_compiler_rt} \
+  -DBOOTSTRAP_LIBUNWIND_USE_COMPILER_RT=${bs_libunwind_use_compiler_rt} \
+  -DBOOTSTRAP_LLVM_ENABLE_LIBCXX=${bs_llvm_enable_libcxx} \
+  -DBOOTSTRAP_LLVM_ENABLE_LLD=${bs_llvm_enable_lld} \
+  -DBOOTSTRAP_LLVM_ENABLE_LTO=${bs_llvm_enable_lto} \
+  -DBOOTSTRAP_LLVM_ENABLE_MODULES=${bs_llvm_enable_modules} \
+  -DBOOTSTRAP_LLVM_PARALLEL_COMPILE_JOBS=${bs_llvm_parallel_compile} \
+  -DBOOTSTRAP_LLVM_PARALLEL_LINK_JOBS=${bs_llvm_parallel_link} \
+  ${repo_dir}/llvm || (echo "${BOLD}${RED}FAILED TO CONFIGURE BOOTSTRAPPED CLANG${WHITE}${OFFBOLD}"; exit 1)
 echo "${BOLD}${GREEN}=== Successfully configured the bootstrap build${WHITE}${OFFBOLD}"
 
 echo " - Running ${BOLD}ninja stage2${OFFBOLD}"

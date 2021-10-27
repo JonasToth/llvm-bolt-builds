@@ -19,10 +19,11 @@ cmake 	-G Ninja \
 	-DCLANG_VENDOR="CachyOS" \
 	-DLLVM_BUILD_INSTRUMENTED=ON \
 	-DLLVM_ENABLE_LLD=ON \
-	-DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;compiler-rt;lld;lldb" \
+	-DCMAKE_C_FLAGS="-march=native -O3" \
+	-DCMAKE_CXX_FLAGS="-march=native -O3" \
+	-DLLVM_ENABLE_PROJECTS="clang;lld;compiler-rt" \
 	-DLLVM_PARALLEL_COMPILE_JOBS="$(nproc)"\
 	-DLLVM_PARALLEL_LINK_JOBS="$(nproc)" \
-	-DLLVM_POLLY_BUILD=ON \
 	-DLLVM_TARGETS_TO_BUILD="X86" \
 	-DLLVM_TOOL_CLANG_BUILD=ON \
 	-DLLVM_TOOL_CLANG_TOOLS_EXTRA_BUILD=OFF \

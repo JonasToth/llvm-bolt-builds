@@ -21,17 +21,20 @@ measure on login01, on multiple days, not too scientific but reproduced twice
 - the build is always done once to ensure everything is fine and there is no
   interference with configuration times, ...
 - build was setup using:
+
 ```
 $ BUILD_DIR=optimized \
   ./Project/Linux/build.sh build_release_clang7_cxx17 \
         -DWITH_NODEJS=OFF \
         -DWITH_MODULE_RTCVS=OFF
 ```
-- after that ``cd $build_dir; ninja clean; time ninja``
+
+- after that `cd $build_dir; ninja clean; time ninja`
 
 ### clang-7-cxx17 on AWS 36 core machine
 
 - compiler package from apt.llvm.org, living in `/usr/lib/llvm-7/`
+
 ```
 $ time ninja #std1
 > real    10m46.662s   == 646,662s
@@ -47,6 +50,7 @@ $ ninja clean; time ninja # std2
 ### generic-optimized-clang-7-cxx17 on AWS 36 core machine
 
 - compiler trained on the compiler itself
+
 ```
 $ time ninja # opt1
 > real    8m33.118s    == 511,118s
@@ -58,6 +62,7 @@ $ ninja clean; time ninja # opt2
 > user    258m40.521s  == 15520,521s
 > sys     11m36.805s   == 696,805s
 ```
+
 - compiler was used with manual patching of `./Project/Linux/buildsteps.sh`
   to use the custom build compiler, which was uploaded as a tar.gz
 
