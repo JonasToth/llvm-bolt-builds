@@ -40,14 +40,14 @@ cd ..
 export PATH="${BOLT_INSTALL}:$PATH"
 
 echo "* Bolting Clang"
-perf2bolt ${CPATH}/clang-13 \
+perf2bolt ${CPATH}/clang-14 \
 	-p perf.data \
-	-o clang-13.fdata \
-	-w clang-13.yaml || (echo "Could not convert perf-data to bolt for clang-7"; exit 1)
+	-o clang-14.fdata \
+	-w clang-14.yaml || (echo "Could not convert perf-data to bolt for clang-7"; exit 1)
 
-llvm-bolt ${CPATH}/clang-13 \
-	-o ${CPATH}/clang-13.bolt \
-	-b clang-13.yaml \
+llvm-bolt ${CPATH}/clang-14 \
+	-o ${CPATH}/clang-14.bolt \
+	-b clang-14.yaml \
 	-reorder-blocks=cache+ \
 	-reorder-functions=hfsort+ \
 	-split-functions=3 \
