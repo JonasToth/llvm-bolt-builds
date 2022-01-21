@@ -13,6 +13,8 @@ $SCRIPT_PATH/setup_llvm_repo.bash || (echo "Setting up mono-repo failed!"; exit 
 echo  "build bolt"
 $SCRIPT_PATH/build_bolt.bash || (echo "Building llvm-bolt separatly failed!"; exit 1)
 
+cd $SCRIPT_PATH
+
 echo "Create vanilla build of LLVM toolchain, comparitivly slow, but contains the necessary tools we use (without BOLT)"
 ./build_stage1.bash || (echo "Building Stage1-Toolchain failed!"; exit 1)
 

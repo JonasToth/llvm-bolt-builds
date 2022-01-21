@@ -10,8 +10,6 @@ cd stage3-bolt
 echo "== Configure Build"
 echo "== Build with stage2-prof-use-tools -- $CPATH"
 
-export LDFLAGS="-Wl,-q"
-
 CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
 	cmake 	-G Ninja \
 	-DBUILD_SHARED_LIBS=OFF \

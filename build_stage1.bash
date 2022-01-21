@@ -28,6 +28,11 @@ CC=clang CXX=clang++ LD=lld \
 	-DLLVM_TARGETS_TO_BUILD="X86" \
 	-DLLVM_ENABLE_BACKTRACES=OFF \
 	-DLLVM_ENABLE_WARNINGS=OFF \
+	-DLLVM_ENABLE_LLD=ON \
+	-DLLVM_TOOL_CLANG_BUILD=ON \
+	-DLLVM_TOOL_CLANG_TOOLS_EXTRA_BUILD=OFF \
+	-DLLVM_TOOL_COMPILER_RT_BUILD=ON \
+	-DLLVM_TOOL_LLD_BUILD=ON \
 	../../llvm-project/llvm || (echo "Could not configure project!"; exit 1)
 
 echo
