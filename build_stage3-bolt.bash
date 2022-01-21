@@ -9,6 +9,9 @@ cd stage3-bolt
 
 echo "== Configure Build"
 echo "== Build with stage2-prof-use-tools -- $CPATH"
+
+export LDFLAGS="-Wl,-q"
+
 CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
 	cmake 	-G Ninja \
 	-DBUILD_SHARED_LIBS=OFF \
@@ -16,6 +19,12 @@ CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
 	-DCMAKE_INSTALL_PREFIX="$(pwd)/install" \
 	-DCLANG_ENABLE_ARCMT=OFF \
 	-DCLANG_ENABLE_STATIC_ANALYZER=OFF \
+	-DCLANG_PLUGIN_SUPPORT=OFF \
+	-DLLVM_ENABLE_BINDINGS=OFF \
+	-DLLVM_ENABLE_OCAMLDOC=OFF \
+	-DLLVM_INCLUDE_EXAMPLES=OFF \
+	-DLLVM_INCLUDE_TESTS=OFF \
+	-DLLVM_INCLUDE_DOCS=OFF \
 	-DCLANG_VENDOR="CachyOS" \
 	-DLLVM_ENABLE_LLD=ON \
 	-DCMAKE_C_FLAGS="-march=native -O3" \
@@ -24,10 +33,6 @@ CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
 	-DLLVM_PARALLEL_COMPILE_JOBS="$(nproc)"\
 	-DLLVM_PARALLEL_LINK_JOBS="$(nproc)" \
 	-DLLVM_TARGETS_TO_BUILD="all" \
-	-DLLVM_TOOL_CLANG_BUILD=ON \
-	-DLLVM_TOOL_CLANG_TOOLS_EXTRA_BUILD=OFF \
-	-DLLVM_TOOL_COMPILER_RT_BUILD=ON \
-	-DLLVM_TOOL_LLD_BUILD=ON \
 	../../llvm-project/llvm || (echo "Could not configure project!"; exit 1)
 
 echo
@@ -43,7 +48,7 @@ echo "* Bolting Clang"
 perf2bolt ${CPATH}/clang-14 \
 	-p perf.data \
 	-o clang-14.fdata \
-	-w clang-14.yaml || (echo "Could not convert perf-data to bolt for clang-7"; exit 1)
+	-w clang-14.yaml || (echo "Could not convert perf-data to bolt for clang-14"; exit 1)
 
 llvm-bolt ${CPATH}/clang-14 \
 	-o ${CPATH}/clang-14.bolt \
@@ -54,13 +59,13 @@ llvm-bolt ${CPATH}/clang-14 \
 	-split-all-cold \
 	-dyno-stats \
 	-icf=1 \
-	-use-gnu-stack || (echo "Could not optimize binary for clang-7"; exit 1)
+	-use-gnu-stack || (echo "Could not optimize binary for clang-14"; exit 1)
 
 echo "* Bolting LLD"
 perf2bolt ${CPATH}/lld \
 	-p perf.data \
 	-o lld.fdata \
-	-w lld.yaml || (echo "Could not convert perf-data to bolt for lld-7"; exit 1)
+	-w lld.yaml || (echo "Could not convert perf-data to bolt for lld-14"; exit 1)
 
 llvm-bolt ${CPATH}/lld \
 	-o ${CPATH}/lld.bolt \
@@ -71,4 +76,4 @@ llvm-bolt ${CPATH}/lld \
 	-split-all-cold \
 	-dyno-stats \
 	-icf=1 \
-	-use-gnu-stack || (echo "Could not optimize binary for lld-7"; exit 1)
+	-use-gnu-stack || (echo "Could not optimize binary for lld-14"; exit 1)

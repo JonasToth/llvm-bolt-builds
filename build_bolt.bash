@@ -7,7 +7,7 @@ echo "== Deactivate everything but 'llvm-bolt'"
 
 cmake -G Ninja ../llvm-project/llvm \
 	-DLLVM_ENABLE_PROJECTS="bolt" \
-	-DLLVM_TARGETS_TO_BUILD="X86;AArch64" \
+	-DLLVM_TARGETS_TO_BUILD="X86" \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DLLVM_ENABLE_ASSERTIONS=ON \
 	-DCMAKE_INSTALL_PREFIX="$(pwd)/install" && \

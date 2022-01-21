@@ -9,14 +9,20 @@ echo "== Configure Build"
 echo "== Build with stage1-tools -- $CPATH"
 echo "== Build includes bolt-enabled relocations"
 
-export LDFLAGS="-Wl,-q"
+
 CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
-cmake 	-G Ninja \
+	cmake 	-G Ninja \
 	-DBUILD_SHARED_LIBS=OFF \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DCMAKE_INSTALL_PREFIX="$(pwd)/install" \
 	-DCLANG_ENABLE_ARCMT=OFF \
 	-DCLANG_ENABLE_STATIC_ANALYZER=OFF \
+	-DCLANG_PLUGIN_SUPPORT=OFF \
+	-DLLVM_ENABLE_BINDINGS=OFF \
+	-DLLVM_ENABLE_OCAMLDOC=OFF \
+	-DLLVM_INCLUDE_EXAMPLES=OFF \
+	-DLLVM_INCLUDE_TESTS=OFF \
+	-DLLVM_INCLUDE_DOCS=OFF \
 	-DCLANG_VENDOR="CachyOS" \
 	-DLLVM_ENABLE_LLD=ON \
 	-DLLVM_ENABLE_LTO=THIN \
@@ -27,10 +33,6 @@ cmake 	-G Ninja \
 	-DLLVM_PARALLEL_LINK_JOBS="$(nproc)" \
 	-DLLVM_PROFDATA_FILE=${BASE_DIR}/stage2-prof-generate/profiles/clang.prof \
 	-DLLVM_TARGETS_TO_BUILD="X86" \
-	-DLLVM_TOOL_CLANG_BUILD=ON \
-	-DLLVM_TOOL_CLANG_TOOLS_EXTRA_BUILD=OFF \
-	-DLLVM_TOOL_COMPILER_RT_BUILD=OFF \
-	-DLLVM_TOOL_LLD_BUILD=ON \
 	../../llvm-project/llvm || (echo "Could not configure project!"; exit 1)
 
 echo
