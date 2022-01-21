@@ -11,6 +11,7 @@ cmake -G Ninja ../llvm-project/llvm \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DLLVM_ENABLE_ASSERTIONS=ON \
 	-DCMAKE_INSTALL_PREFIX="$(pwd)/install" && \
-	ninja bolt
+    ninja install-llvm-bolt install-perf2bolt install-merge-fdata \
+      install-llvm-boltdiff install-bolt_rt
 
 cd $SCRIPT_PATH
