@@ -1,7 +1,7 @@
 #!/bin/bash
 
 BASE_DIR=$(pwd)
-BOLT_INSTALL="$(pwd)/build-bolt/install/bin"
+BOLT_INSTALL="$(pwd)/../build-bolt/install/bin"
 CPATH="$(pwd)/stage2-prof-use-lto-reloc/install/bin"
 
 mkdir -p stage3-bolt || (echo "Could not create stage3-bolt directory"; exit 1)
