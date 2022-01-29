@@ -35,7 +35,7 @@ CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
 
 echo
 echo "== Start Training Build"
-perf record -e cycles:u -j any,u -- ninja clang || (echo "Could not build project for training!"; exit 1)
+perf record -o ../perf.data -e cycles:u -j any,u -- ninja clang  || (echo "Could not build project for training!"; exit 1)
 
 cd ..
 
