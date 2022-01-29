@@ -22,14 +22,14 @@ CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
 	-DLLVM_INCLUDE_EXAMPLES=OFF \
 	-DLLVM_INCLUDE_TESTS=OFF \
 	-DLLVM_INCLUDE_DOCS=OFF \
-	-DCLANG_VENDOR="CachyOS" \
+	-DCLANG_VENDOR="Clang-BOLT" \
 	-DCMAKE_C_FLAGS="-march=native -O3" \
 	-DCMAKE_CXX_FLAGS="-march=native -O3" \
 	-DLLVM_ENABLE_PROJECTS="clang;lld;compiler-rt" \
 	-DLLVM_PARALLEL_COMPILE_JOBS="$(nproc)"\
 	-DLLVM_PARALLEL_LINK_JOBS="$(nproc)" \
 	-DLLVM_TARGETS_TO_BUILD="X86" \
-	-DLLVM_ENABLE_LLD=ON \
+  -DLLVM_USE_LINKER=lld \
 	-DLLVM_TOOL_CLANG_BUILD=ON \
 	-DLLVM_TOOL_CLANG_TOOLS_EXTRA_BUILD=OFF \
 	-DLLVM_TOOL_COMPILER_RT_BUILD=ON \
@@ -38,7 +38,7 @@ CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
 
 echo
 echo "== Start Build"
-ninja || (echo "Could not build project for training!"; exit 1)
+ninja clang|| (echo "Could not build project for training!"; exit 1)
 
 echo
 echo "== Merge Profile data"

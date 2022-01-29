@@ -5,11 +5,11 @@ cd build-bolt
 
 echo "== Deactivate everything but 'llvm-bolt'"
 CC=clang CXX=clang++ LD=lld \
-cmake -G Ninja ../llvm-project/llvm \
+	cmake -G Ninja ../llvm-project/llvm \
 	-DLLVM_ENABLE_PROJECTS="bolt" \
-	-DLLVM_TARGETS_TO_BUILD="X86" \
+	-DLLVM_TARGETS_TO_BUILD="X86;AArch64" \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DLLVM_ENABLE_ASSERTIONS=ON \
 	-DCMAKE_INSTALL_PREFIX="$(pwd)/install" && \
-    ninja install-llvm-bolt install-perf2bolt install-merge-fdata \
-      install-llvm-boltdiff install-bolt_rt
+	ninja install-llvm-bolt install-perf2bolt install-merge-fdata \
+	install-llvm-boltdiff install-bolt_rt

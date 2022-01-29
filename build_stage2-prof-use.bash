@@ -10,13 +10,13 @@ echo "== Configure Build"
 echo "== Build with stage1-tools -- $CPATH"
 
 CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
-cmake 	-G Ninja \
+	cmake 	-G Ninja \
 	-DBUILD_SHARED_LIBS=OFF \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DCMAKE_INSTALL_PREFIX="$(pwd)/install" \
 	-DCLANG_ENABLE_ARCMT=OFF \
 	-DCLANG_ENABLE_STATIC_ANALYZER=OFF \
-	-DCLANG_VENDOR="CachyOS" \
+	-DCLANG_VENDOR="Clang-BOLT" \
 	-DLLVM_ENABLE_LLD=ON \
 	-DLLVM_ENABLE_LTO=OFF \
 	-DCMAKE_C_FLAGS="-march=native -O3" \

@@ -5,9 +5,9 @@ trained to any project.
 
 For them to function it expects the following directory structure:
 
--   SomeBaseDir/
-    -   multistage-build/README.md (this file and all scripts must live here!)
-    -   llvm-project (created by `setup_llvm_repo.bash`), LLVM Monorepo
+- SomeBaseDir/
+  - multistage-build/README.md (this file and all scripts must live here!)
+  - llvm-project (created by `setup_llvm_repo.bash`), LLVM Monorepo
 
 ## How to build
 
@@ -29,9 +29,9 @@ $ #       Toolchain will still be faster.
 This sequence will give you (hopefully) a faster LLVM toolchain.
 Technologies used:
 
--   LLVM Link Time Optimization (LTO)
--   Binary Instrumentation and Profile-Guided-Optimization (PGO)
--   perf-measurement and branch-sampling and final binary reordering (BOLT)
+- LLVM Link Time Optimization (LTO)
+- Binary Instrumentation and Profile-Guided-Optimization (PGO)
+- perf-measurement and branch-sampling and final binary reordering (BOLT)
 
 The goal of the techniques is to utilize the CPU black magic better and layout
 the code in a way, that allows faster execution.

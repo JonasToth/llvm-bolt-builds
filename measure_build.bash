@@ -37,4 +37,4 @@ CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
 
 echo
 echo "== Start Build"
-time --format "clang %e seconds" ninja || (echo "Could not build project!"; exit 1)
+time ninja clang || (echo "Could not build project!"; exit 1)

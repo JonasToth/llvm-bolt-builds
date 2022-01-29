@@ -1,5 +1,5 @@
 #!/bin/bash
-
+BASE_DIR=$(pwd)
 CPATH="$(pwd)/stage1/install/bin"
 
 mkdir -p stage2-prof-use-lto-reloc || (echo "Could not create stage2-prof-use-lto-reloc directory"; exit 1)
@@ -23,20 +23,20 @@ CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
 	-DLLVM_INCLUDE_EXAMPLES=OFF \
 	-DLLVM_INCLUDE_TESTS=OFF \
 	-DLLVM_INCLUDE_DOCS=OFF \
-	-DCLANG_VENDOR="CachyOS" \
+	-DCLANG_VENDOR="Clang-BOLT" \
 	-DLLVM_ENABLE_LLD=ON \
+	-DCOMPILER_RT_BUILD_SANITIZERS=OFF \
+	-DCOMPILER_RT_BUILD_XRAY=OFF \
+	-DCOMPILER_RT_BUILD_LIBFUZZER=OFF  \
 	-DLLVM_ENABLE_LTO=THIN \
-	-DCMAKE_C_FLAGS="-march=native -O3" \
-	-DCMAKE_CXX_FLAGS="-march=native -O3" \
+	-DCMAKE_C_FLAGS="-march=native -O3 -gdwarf-4" \
+	-DCMAKE_CXX_FLAGS="-march=native -O3 -gdwarf-4" \
 	-DLLVM_ENABLE_PROJECTS="clang;lld;compiler-rt" \
 	-DLLVM_PARALLEL_COMPILE_JOBS="$(nproc)"\
 	-DLLVM_PARALLEL_LINK_JOBS="$(nproc)" \
 	-DLLVM_PROFDATA_FILE=${BASE_DIR}/stage2-prof-generate/profiles/clang.prof \
 	-DLLVM_TARGETS_TO_BUILD="X86" \
-	-DLLVM_ENABLE_LLD=ON \
 	-DLLVM_TOOL_CLANG_BUILD=ON \
-	-DLLVM_TOOL_CLANG_TOOLS_EXTRA_BUILD=OFF \
-	-DLLVM_TOOL_COMPILER_RT_BUILD=ON \
 	-DLLVM_TOOL_LLD_BUILD=ON \
 	../../llvm-project/llvm || (echo "Could not configure project!"; exit 1)
 

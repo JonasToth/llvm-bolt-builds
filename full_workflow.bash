@@ -31,5 +31,5 @@ echo " Build an optimized LLVM (PGO+LTO) with the stage1 compiler. (faster ~30%)
 # and feed these measurements into BOLT, that will optimize the binary layout
 # of clang for improved cache friendlyness
 
-echo "Only use it if you got perf and CPU with LBR record"
+#echo "Only use it if you got perf and CPU with LBR record"
 ./build_stage3-bolt.bash || (echo "Optimizing Stage2-Toolchain further with llvm-bolt failed!"; exit 1)

@@ -11,17 +11,17 @@ echo "== Build with stage1-tools -- $CPATH"
 
 export LDFLAGS="-Wl,-q"
 CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
-cmake 	-G Ninja \
+	cmake 	-G Ninja \
 	-DBUILD_SHARED_LIBS=OFF \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DCMAKE_INSTALL_PREFIX="$(pwd)/install" \
 	-DCLANG_ENABLE_ARCMT=OFF \
 	-DCLANG_ENABLE_STATIC_ANALYZER=OFF \
-	-DCLANG_VENDOR="CachOS" \
+	-DCLANG_VENDOR="Clang-BOLT" \
 	-DLLVM_ENABLE_LLD=ON \
 	-DLLVM_ENABLE_LTO=THIN \
-	-DCMAKE_C_FLAGS="-march=native -O3" \
-	-DCMAKE_CXX_FLAGS="-march=native -O3" \
+	-DCMAKE_C_FLAGS="-march=native -O3 -gdwarf-4" \
+	-DCMAKE_CXX_FLAGS="-march=native -O3 -gdwarf-4" \
 	-DLLVM_ENABLE_PROJECTS="clang;lld;compiler-rt" \
 	-DLLVM_PARALLEL_COMPILE_JOBS="$(nproc)"\
 	-DLLVM_PARALLEL_LINK_JOBS="$(nproc)" \
@@ -29,7 +29,6 @@ cmake 	-G Ninja \
 	-DLLVM_TARGETS_TO_BUILD="X86" \
 	-DLLVM_TOOL_CLANG_BUILD=ON \
 	-DLLVM_TOOL_CLANG_TOOLS_EXTRA_BUILD=OFF \
-	-DLLVM_TOOL_COMPILER_RT_BUILD=OFF \
 	-DLLVM_TOOL_LLD_BUILD=ON \
 	../../llvm-project/llvm || (echo "Could not configure project!"; exit 1)
 

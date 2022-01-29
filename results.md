@@ -6,21 +6,21 @@ measure on login01, on multiple days, not too scientific but reproduced twice
 
 ### Created Stage1 Compiler
 
--   after `sync`: clang 643.48 seconds
+- after `sync`: clang 643.48 seconds
 
 ### Created Stage2 PGO+FullLTO Compiler
 
--   after `sync`: clang 479.43 seconds (+34%)
+- after `sync`: clang 479.43 seconds (+34%)
 
 ### Created Stage2 PGO+FullLTO+Bolt clang and lld
 
--   after `sync`: clang 404.17 seconds (+59% stage1, +18% stage2 PGO+FullLTO)
+- after `sync`: clang 404.17 seconds (+59% stage1, +18% stage2 PGO+FullLTO)
 
 ## rtc-platform target
 
--   the build is always done once to ensure everything is fine and there is no
-    interference with configuration times, ...
--   build was setup using:
+- the build is always done once to ensure everything is fine and there is no
+  interference with configuration times, ...
+- build was setup using:
 
 
     $ BUILD_DIR=optimized \
@@ -28,11 +28,11 @@ measure on login01, on multiple days, not too scientific but reproduced twice
             -DWITH_NODEJS=OFF \
             -DWITH_MODULE_RTCVS=OFF
 
--   after that `cd $build_dir; ninja clean; time ninja`
+- after that `cd $build_dir; ninja clean; time ninja`
 
 ### clang-7-cxx17 on AWS 36 core machine
 
--   compiler package from apt.llvm.org, living in `/usr/lib/llvm-7/`
+- compiler package from apt.llvm.org, living in `/usr/lib/llvm-7/`
 
 
     $ time ninja #std1
@@ -47,7 +47,7 @@ measure on login01, on multiple days, not too scientific but reproduced twice
 
 ### generic-optimized-clang-7-cxx17 on AWS 36 core machine
 
--   compiler trained on the compiler itself
+- compiler trained on the compiler itself
 
 
     $ time ninja # opt1
@@ -60,8 +60,8 @@ measure on login01, on multiple days, not too scientific but reproduced twice
     > user    258m40.521s  == 15520,521s
     > sys     11m36.805s   == 696,805s
 
--   compiler was used with manual patching of `./Project/Linux/buildsteps.sh`
-    to use the custom build compiler, which was uploaded as a tar.gz
+- compiler was used with manual patching of `./Project/Linux/buildsteps.sh`
+  to use the custom build compiler, which was uploaded as a tar.gz
 
 #### Speedup to normal builds
 

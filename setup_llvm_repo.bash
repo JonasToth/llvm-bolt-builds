@@ -9,6 +9,6 @@ fi
 
 echo "Cloning llvm-project"
 
-git clone https://github.com/llvm/llvm-project.git
+git clone --depth 1 https://github.com/llvm/llvm-project.git
 
 cd $SCRIPT_PATH

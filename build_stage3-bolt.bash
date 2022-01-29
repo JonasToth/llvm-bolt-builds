@@ -1,7 +1,7 @@
 #!/bin/bash
 
 BASE_DIR=$(pwd)
-BOLT_INSTALL="$(pwd)/../build-bolt/install/bin"
+BOLT_INSTALL="$(pwd)/build-bolt/install/bin"
 CPATH="$(pwd)/stage2-prof-use-lto-reloc/install/bin"
 
 mkdir -p stage3-bolt || (echo "Could not create stage3-bolt directory"; exit 1)
@@ -23,19 +23,19 @@ CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
 	-DLLVM_INCLUDE_EXAMPLES=OFF \
 	-DLLVM_INCLUDE_TESTS=OFF \
 	-DLLVM_INCLUDE_DOCS=OFF \
-	-DCLANG_VENDOR="CachyOS" \
+	-DCLANG_VENDOR="Clang-BOLT" \
 	-DLLVM_ENABLE_LLD=ON \
 	-DCMAKE_C_FLAGS="-march=native -O3" \
 	-DCMAKE_CXX_FLAGS="-march=native -O3" \
 	-DLLVM_ENABLE_PROJECTS="clang;lld;compiler-rt" \
 	-DLLVM_PARALLEL_COMPILE_JOBS="$(nproc)"\
 	-DLLVM_PARALLEL_LINK_JOBS="$(nproc)" \
-	-DLLVM_TARGETS_TO_BUILD="all" \
+	-DLLVM_TARGETS_TO_BUILD="X86" \
 	../../llvm-project/llvm || (echo "Could not configure project!"; exit 1)
 
 echo
 echo "== Start Training Build"
-perf record -o ../perf.data -e cycles:u -j any,u -- ninja clang || (echo "Could not build project for training!"; exit 1)
+perf record -e cycles:u -j any,u -- ninja clang || (echo "Could not build project for training!"; exit 1)
 
 cd ..
 
