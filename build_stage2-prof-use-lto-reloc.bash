@@ -29,8 +29,8 @@ CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
 	-DCOMPILER_RT_BUILD_XRAY=OFF \
 	-DCOMPILER_RT_BUILD_LIBFUZZER=OFF  \
 	-DLLVM_ENABLE_LTO=THIN \
-	-DCMAKE_C_FLAGS="-march=native -O3 -gdwarf-4" \
-	-DCMAKE_CXX_FLAGS="-march=native -O3 -gdwarf-4" \
+	-DCMAKE_C_FLAGS="-march=native -O3" \
+	-DCMAKE_CXX_FLAGS="-march=native -O3" \
 	-DLLVM_ENABLE_PROJECTS="clang;lld;compiler-rt" \
 	-DLLVM_PARALLEL_COMPILE_JOBS="$(nproc)"\
 	-DLLVM_PARALLEL_LINK_JOBS="$(nproc)" \
