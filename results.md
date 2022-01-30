@@ -1,75 +1,70 @@
-# Experimental results
+# Benchmarking with script ./measure_build.bash
 
-measure on login01, on multiple days, not too scientific but reproduced twice
+## Linux CachyOS 5.17.0-rc1-0.2-cachyos-rc-lto #1 SMP PREEMPT Sun, 30 Jan 2022 03:38:16 +0000 x86_64 GNU/Linux All Core OC 4650 MHz 1.3 V
 
-## clang target
+### Stock LLVM 13.0.0 arch built with THINLTO + Clang:
 
-### Created Stage1 Compiler
+```
+== Start Build
+[2477/2477] Creating executable symlink bin/clang
 
-- after `sync`: clang 643.48 seconds
+real    6m46.736s
+user    152m19.362s
+sys     4m58.632s
 
-### Created Stage2 PGO+FullLTO Compiler
+406 Seconds
+```
 
-- after `sync`: clang 479.43 seconds (+34%)
+### Stage1 LLVM14 Compiler:
 
-### Created Stage2 PGO+FullLTO+Bolt clang and lld
+```
+== Start Build
+[2477/2477] Creating executable symlink bin/clang
 
-- after `sync`: clang 404.17 seconds (+59% stage1, +18% stage2 PGO+FullLTO)
+real    6m54.555s
+user    152m38.307s
+sys     4m34.412s
 
-## rtc-platform target
+414 Seconds
 
-- the build is always done once to ensure everything is fine and there is no
-  interference with configuration times, ...
-- build was setup using:
+Differnce to Stock:
+-1.932367149758454 %
+```
 
+### LLVM THINLTO + PGO (stage2-lto-prof-use-reloc)
 
-    $ BUILD_DIR=optimized \
-      ./Project/Linux/build.sh build_release_clang7_cxx17 \
-            -DWITH_NODEJS=OFF \
-            -DWITH_MODULE_RTCVS=OFF
+```
+== Start Build
+[2477/2477] Creating executable symlink bin/clang
 
-- after that `cd $build_dir; ninja clean; time ninja`
+real 4m50.353s
+user 107m10.248s
+sys 4m30.552s
+290 Seconds
+Difference to Stock:
++28.57142857142857%
+```
 
-### clang-7-cxx17 on AWS 36 core machine
+### LLVM THINLTO + PGO (stage2-lto-prof-use-reloc) + bolted without perf profile with command:
 
-- compiler package from apt.llvm.org, living in `/usr/lib/llvm-7/`
+```
+/home/ptr1337/repo/llvm-bolt/build-bolt/bin/llvm-bolt /home/ptr1337/repo/llvm-bolt/llvm-bolt-builds/stage2-prof-use-lto-reloc/install/bin/clang-14 -o /home/ptr1337/repo/llvm-bolt/llvm-bolt-builds/stage2-prof-use-lto-reloc/install/bin/clang-14.bolt --instrument-hot-only --jt-footprint-optimize-for-icache --jt-footprint-reduction --mcf-use-rarcs --reorder-functions=pettis-hansen --peepholes=double-jumps --peepholes=useless-branches --reorder-blocks=cache+ --split-all-cold --icf --dyno-stats
+```
 
+Result:
 
-    $ time ninja #std1
-    > real    10m46.662s   == 646,662s
-    > user    333m25.929s  == 20005,929s
-    > sys     13m17.211s   == 797,211
+```
+== Start Build
+[2477/2477] Creating executable symlink bin/clang
 
-    $ ninja clean; time ninja # std2
-    > real    10m52.052s   == 652,052s
-    > user    331m46.688s  == 19906,688s
-    > sys     13m9.674s    == 789,674s
+real    4m46.036s
+user    105m27.390s
+sys     4m26.167s
 
-### generic-optimized-clang-7-cxx17 on AWS 36 core machine
+286 Seconds
 
-- compiler trained on the compiler itself
-
-
-    $ time ninja # opt1
-    > real    8m33.118s    == 511,118s
-    > user    258m39.663s  == 15519,663s
-    > sys     11m38.800s   == 698,8s
-
-    $ ninja clean; time ninja # opt2
-    > real    8m31.632s    == 511,632s
-    > user    258m40.521s  == 15520,521s
-    > sys     11m36.805s   == 696,805s
-
-- compiler was used with manual patching of `./Project/Linux/buildsteps.sh`
-  to use the custom build compiler, which was uploaded as a tar.gz
-
-#### Speedup to normal builds
-
-Using the fastest builds
-
-    $ {real,user,sys}_std2 / {real,user,sys}_opt2
-    > real  = 1,275736718
-    > user  = 1,282675275
-    > sys   = 1,130042931
-
-### rtc-platform-optimized-clang-7-cxx17
+Difference to Stock:
++29.55665024630542%
+Difference bolted binary without perf record profile to stage2-reloc:
++1.3793103448275863%
+```
