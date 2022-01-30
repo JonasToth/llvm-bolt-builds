@@ -25,11 +25,11 @@ CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
 	-DCLANG_VENDOR="Clang-BOLT" \
 	-DCMAKE_C_FLAGS="-march=native -O3" \
 	-DCMAKE_CXX_FLAGS="-march=native -O3" \
-	-DLLVM_ENABLE_PROJECTS="clang;lld;compiler-rt" \
+	-DLLVM_ENABLE_PROJECTS="clang;lld;compiler-rt;polly" \
 	-DLLVM_PARALLEL_COMPILE_JOBS="$(nproc)"\
 	-DLLVM_PARALLEL_LINK_JOBS="$(nproc)" \
 	-DLLVM_TARGETS_TO_BUILD="X86" \
-  -DLLVM_USE_LINKER=lld \
+  	-DLLVM_USE_LINKER=lld \
 	-DLLVM_TOOL_CLANG_BUILD=ON \
 	-DLLVM_TOOL_CLANG_TOOLS_EXTRA_BUILD=OFF \
 	-DLLVM_TOOL_COMPILER_RT_BUILD=ON \

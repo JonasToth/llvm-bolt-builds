@@ -1,12 +1,5 @@
 #!/bin/bash
 
-
-echo "== Checking for existence of 'llvm-project' directory"
-if [ -d "llvm-project" ]; then
-  echo "* 'llvm-project' already exists. Stopping"
-  exit 0
-fi
-
 echo "Cloning llvm-project"
 
 git clone --depth 1 https://github.com/llvm/llvm-project.git

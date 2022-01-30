@@ -6,13 +6,6 @@ cd ../
 echo "Cloning LLVM REPO"
 $SCRIPT_PATH/setup_llvm_repo.bash || (echo "Setting up mono-repo failed!"; exit 1)
 
-#cd ../
-#$SCRIPT_PATH/choose_latest_release.bash || (echo "Switching to latest stable LLVM-Release failed!"; exit 1)
-#cd ../
-
-echo  "build bolt"
-$SCRIPT_PATH/build_bolt.bash || (echo "Building llvm-bolt separatly failed!"; exit 1)
-
 cd $SCRIPT_PATH
 
 echo "Create vanilla build of LLVM toolchain, comparitivly slow, but contains the necessary tools we use (without BOLT)"
@@ -31,5 +24,5 @@ echo " Build an optimized LLVM (PGO+LTO) with the stage1 compiler. (faster ~30%)
 # and feed these measurements into BOLT, that will optimize the binary layout
 # of clang for improved cache friendlyness
 
-#echo "Only use it if you got perf and CPU with LBR record"
+echo "Only use it if you got perf and CPU with LBR record"
 ./build_stage3-bolt.bash || (echo "Optimizing Stage2-Toolchain further with llvm-bolt failed!"; exit 1)

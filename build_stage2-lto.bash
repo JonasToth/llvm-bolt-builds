@@ -22,7 +22,7 @@ CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
 	-DLLVM_ENABLE_LTO=Thin \
 	-DCMAKE_C_FLAGS="-march=native -O3" \
 	-DCMAKE_CXX_FLAGS="-march=native -O3" \
-	-DLLVM_ENABLE_PROJECTS="clang;lld;compiler-rt" \
+	-DLLVM_ENABLE_PROJECTS="clang;lld;compiler-rt;polly" \
 	-DLLVM_PARALLEL_COMPILE_JOBS="$(nproc)"\
 	-DLLVM_PARALLEL_LINK_JOBS="$(nproc)" \
 	-DLLVM_TARGETS_TO_BUILD="X86" \

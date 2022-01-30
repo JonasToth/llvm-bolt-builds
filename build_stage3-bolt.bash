@@ -1,7 +1,7 @@
 #!/bin/bash
 
 BASE_DIR=$(pwd)
-BOLT_INSTALL="$(pwd)/build-bolt/install/bin"
+STAGE_ONE="$(pwd)/stage1/install/bin"
 CPATH="$(pwd)/stage2-prof-use-lto-reloc/install/bin"
 
 mkdir -p stage3-bolt || (echo "Could not create stage3-bolt directory"; exit 1)
@@ -40,7 +40,7 @@ perf record -o ../perf.data -e cycles:u -j any,u -- ninja clang  || (echo "Could
 cd ..
 
 # Do the bolt-processing of the binary.
-export PATH="${BOLT_INSTALL}:$PATH"
+export PATH="${STAGE_ONE}:$PATH"
 
 echo "* Bolting Clang"
 perf2bolt ${CPATH}/clang-14 \
