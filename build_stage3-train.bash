@@ -38,7 +38,7 @@ CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
 
 echo
 echo "== Start Build"
-ninja clang|| (echo "Could not build project for training!"; exit 1)
+ninja clang || (echo "Could not build project for training!"; exit 1)
 
 echo
 echo "== Merge Profile data"
