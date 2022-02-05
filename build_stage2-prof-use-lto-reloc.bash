@@ -29,6 +29,10 @@ CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
 	-DCOMPILER_RT_BUILD_XRAY=OFF \
 	-DCOMPILER_RT_BUILD_LIBFUZZER=OFF  \
 	-DLLVM_ENABLE_LTO=THIN \
+    -DCMAKE_CXX_FLAGS="-O3 -march=native -m64 -mavx -fomit-frame-pointer" \
+    -DCMAKE_C_FLAGS="-O3-march=native -m64 -mavx -fomit-frame-pointer" \
+    -DCMAKE_EXE_LINKER_FLAGS="-Wl,--as-needed -Wl,--build-id=sha1 -Wl,--emit-relocs" \
+    -DENABLE_LINKER_BUILD_ID=ON \
 	-DCMAKE_C_FLAGS="-march=native -O3" \
 	-DCMAKE_CXX_FLAGS="-march=native -O3" \
 	-DLLVM_ENABLE_PROJECTS="clang;lld;compiler-rt;polly" \
