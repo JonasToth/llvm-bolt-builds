@@ -24,6 +24,10 @@ CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
 	-DLLVM_ENABLE_PROJECTS="clang;lld;compiler-rt;polly" \
 	-DLLVM_PARALLEL_COMPILE_JOBS="$(nproc)"\
 	-DLLVM_PARALLEL_LINK_JOBS="$(nproc)" \
+    -DCMAKE_CXX_FLAGS="-O3 -march=native -m64 -mavx -fomit-frame-pointer" \
+    -DCMAKE_C_FLAGS="-O3-march=native -m64 -mavx -fomit-frame-pointer" \
+    -DCMAKE_EXE_LINKER_FLAGS="-Wl,--as-needed -Wl,--build-id=sha1 -Wl,--emit-relocs" \
+    -DENABLE_LINKER_BUILD_ID=ON \
 	-DLLVM_PROFDATA_FILE="${BASE_DIR}"/stage2-prof-generate/profiles/clang.prof \
 	-DLLVM_TARGETS_TO_BUILD="X86" \
 	-DLLVM_TOOL_CLANG_BUILD=ON \
