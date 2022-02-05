@@ -3,7 +3,9 @@
 SCRIPT_PATH=$(pwd)
 
 cd ../
-echo "Cloning LLVM REPO"
+
+# Cloning LLVM
+
 $SCRIPT_PATH/setup_llvm_repo.bash || (echo "Setting up mono-repo failed!"; exit 1)
 
 cd $SCRIPT_PATH
@@ -26,3 +28,9 @@ echo " Build an optimized LLVM (PGO+LTO) with the stage1 compiler. (faster ~30%)
 
 echo "Only use it if you got perf and CPU with LBR record"
 ./build_stage3-bolt.bash || (echo "Optimizing Stage2-Toolchain further with llvm-bolt failed!"; exit 1)
+
+# if perf record -e cycles:u -j any,u -- sleep 1 is not supported, you can uncomment the next script, for optimizing your binary without a profile
+
+echo "Optimizing Stage2-Toolchain without a perf record profile"
+
+./build_stage3-bolt-without-profile.bash || (echo "Optimizing Stage2-Toolchain with bolt failed!"; exit 1)
