@@ -20,15 +20,11 @@ echo " Build an optimized LLVM (PGO+LTO) with the stage1 compiler. (faster ~30%)
 # and feed these measurements into BOLT, that will optimize the binary layout
 # of clang for improved cache friendlyness
 
-perf record -e cycles:u -j any,u -- sleep 1 &>/dev/null; if [[ $? == "0" ]]; then; 
-
-echo "BOLTING with Profile!"
-./build_stage3-bolt.bash || (echo "Optimizing Stage2-Toolchain further with llvm-bolt failed!"; exit 1)
-
-else; 
-
-echo "Optimizing Stage2-Toolchain without a perf record profile"
-
-./build_stage3-bolt-without-profile.bash || (echo "Optimizing Stage2-Toolchain with bolt failed!"; exit 1)
-
+perf record -e cycles:u -j any,u -- sleep 1 &>/dev/null;
+if [[ $? == "0" ]]; then
+  echo "BOLTING with Profile!"
+  ./build_stage3-bolt.bash || (echo "Optimizing Stage2-Toolchain further with llvm-bolt failed!"; exit 1)
+else
+  echo "Optimizing Stage2-Toolchain without a perf record profile"
+  ./build_stage3-bolt-without-profile.bash || (echo "Optimizing Stage2-Toolchain with bolt failed!"; exit 1)
 fi

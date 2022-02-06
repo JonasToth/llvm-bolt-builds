@@ -3,27 +3,16 @@
 This set of scripts creates a 60% faster LLVM toolchain that can be customly
 trained to any project.
 
-For them to function it expects the following directory structure:
-
-- SomeBaseDir/
-  - multistage-build/README.md (this file and all scripts must live here!)
-  - llvm-project (created by `setup_llvm_repo.bash`), LLVM Monorepo
+The full_workflow.bash will autodetect, if your machine supports LBR or not and choose the correct script which suits to your hardware. 
 
 ## How to build
 
-```bash
-$ cd SomeBaseDir/
-$ # get these files here somehow, git clone or whatever distribution method
+```
+git clone https://github.com/ptr1337/llvm-bolt-scripts.git
 
-$ # This will setup the mono-repo, built llvm-bolt separatly and then
-$ # start a multi-stage LLVM build with the latest stable release.
-$ ./full_workflow.bash
-$ # Note: For the last build-stage you need `perf` to function properly.
-$ #       Try out `perf record -e cycles:u -j any,u -- sleep 1`
-$ #       to check that you CPU and Linux does expose the necessary performance
-$ #       counters.
-$ #       If that is not the case, you don't need the final BOLT stage. Your
-$ #       Toolchain will still be faster.
+cd llvm-bolt-scripts
+
+./full_workflow.bash
 ```
 
 This sequence will give you (hopefully) a faster LLVM toolchain.
