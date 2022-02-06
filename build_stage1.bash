@@ -24,7 +24,7 @@ CC=clang CXX=clang++ LD=lld \
 	-DCOMPILER_RT_BUILD_LIBFUZZER=OFF  \
 	-DCLANG_VENDOR="Clang-BOLT" \
     -DCMAKE_CXX_FLAGS="-O3 -march=native -m64 -mavx -fomit-frame-pointer" \
-    -DCMAKE_C_FLAGS="-O3-march=native -m64 -mavx -fomit-frame-pointer" \
+    -DCMAKE_C_FLAGS="-O3 -march=native -m64 -mavx -fomit-frame-pointer" \
 	-DLLVM_ENABLE_PROJECTS="clang;lld;compiler-rt;bolt" \
 	-DLLVM_PARALLEL_COMPILE_JOBS="$(nproc)"\
 	-DLLVM_PARALLEL_LINK_JOBS="$(nproc)" \
