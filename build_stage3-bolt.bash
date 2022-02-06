@@ -25,13 +25,13 @@ CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
 	-DLLVM_INCLUDE_DOCS=OFF \
 	-DCLANG_VENDOR="Clang-BOLT" \
 	-DLLVM_ENABLE_LLD=ON \
-	-DCMAKE_C_FLAGS="-march=native -O3" \
-	-DCMAKE_CXX_FLAGS="-march=native -O3" \
+    -DCMAKE_CXX_FLAGS="-O3 -march=native -m64 -mavx -fomit-frame-pointer" \
+    -DCMAKE_C_FLAGS="-O3-march=native -m64 -mavx -fomit-frame-pointer" \
 	-DLLVM_ENABLE_PROJECTS="clang" \
 	-DLLVM_PARALLEL_COMPILE_JOBS="$(nproc)"\
 	-DLLVM_PARALLEL_LINK_JOBS="$(nproc)" \
 	-DLLVM_TARGETS_TO_BUILD="X86" \
-	../../llvm-project/llvm || (echo "Could not configure project!"; exit 1)
+  	../llvm-project/llvm  || (echo "Could not configure project!"; exit 1)
 
 echo
 echo "== Start Training Build"

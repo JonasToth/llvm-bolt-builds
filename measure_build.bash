@@ -22,18 +22,18 @@ CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
   -DCMAKE_INSTALL_PREFIX="$(pwd)/install" \
   -DCLANG_ENABLE_ARCMT=ON \
   -DCLANG_ENABLE_STATIC_ANALYZER=ON \
-  -DCLANG_VENDOR="LogMeIn" \
+  -DCLANG_VENDOR="CLANG-BOLT" \
   -DLLVM_ENABLE_LLD=ON \
   -DLLVM_ENABLE_PROJECTS="clang" \
   -DLLVM_PARALLEL_COMPILE_JOBS="$(nproc)"\
   -DLLVM_PARALLEL_LINK_JOBS="$(nproc)" \
   -DLLVM_POLLY_BUILD=ON \
-  -DLLVM_TARGETS_TO_BUILD="X86;AArch64" \
+  -DLLVM_TARGETS_TO_BUILD="X86" \
   -DLLVM_TOOL_CLANG_BUILD=ON \
   -DLLVM_TOOL_CLANG_TOOLS_EXTRA_BUILD=ON \
   -DLLVM_TOOL_COMPILER_RT_BUILD=OFF \
   -DLLVM_TOOL_LLD_BUILD=OFF \
-  ../../llvm-project/llvm || (echo "Could not configure project!"; exit 1)
+  ../llvm-project/llvm || (echo "Could not configure project!"; exit 1)
 
 echo
 echo "== Start Build"

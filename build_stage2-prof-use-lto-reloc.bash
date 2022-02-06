@@ -9,7 +9,6 @@ echo "== Configure Build"
 echo "== Build with stage1-tools -- $CPATH"
 echo "== Build includes bolt-enabled relocations"
 
-export LDFLAGS="-Wl,-q"
 CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
 	cmake 	-G Ninja \
 	-DBUILD_SHARED_LIBS=OFF \
@@ -33,16 +32,14 @@ CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
     -DCMAKE_C_FLAGS="-O3-march=native -m64 -mavx -fomit-frame-pointer" \
     -DCMAKE_EXE_LINKER_FLAGS="-Wl,--as-needed -Wl,--build-id=sha1 -Wl,--emit-relocs" \
     -DENABLE_LINKER_BUILD_ID=ON \
-	-DCMAKE_C_FLAGS="-march=native -O3" \
-	-DCMAKE_CXX_FLAGS="-march=native -O3" \
-	-DLLVM_ENABLE_PROJECTS="clang;lld;compiler-rt;polly" \
+	-DLLVM_ENABLE_PROJECTS="clang;lld;compiler-rt" \
 	-DLLVM_PARALLEL_COMPILE_JOBS="$(nproc)"\
 	-DLLVM_PARALLEL_LINK_JOBS="$(nproc)" \
 	-DLLVM_PROFDATA_FILE=${BASE_DIR}/stage2-prof-generate/profiles/clang.prof \
 	-DLLVM_TARGETS_TO_BUILD="X86" \
 	-DLLVM_TOOL_CLANG_BUILD=ON \
 	-DLLVM_TOOL_LLD_BUILD=ON \
-	../../llvm-project/llvm || (echo "Could not configure project!"; exit 1)
+  	../llvm-project/llvm || (echo "Could not configure project!"; exit 1)
 
 echo
 echo "== Start Build"

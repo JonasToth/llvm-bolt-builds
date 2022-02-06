@@ -9,8 +9,8 @@ export PATH="${STAGE_ONE}:$PATH"
 
 echo "Bolting Clang"
 
-llvm-bolt ${CPATH}/clang-15 \
-	-o ${CPATH}/clang-15.bolt \
+llvm-bolt ${CPATH}/clang-14 \
+	-o ${CPATH}/clang-14.bolt \
      --jt-footprint-optimize-for-icache \
      --jt-footprint-reduction \
      --mcf-use-rarcs \
