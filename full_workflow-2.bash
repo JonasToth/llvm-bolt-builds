@@ -92,7 +92,7 @@ cmake -G Ninja ${TOPLEV}/llvm-project/llvm -DLLVM_TARGETS_TO_BUILD=X86 -DCMAKE_B
     -DCMAKE_C_COMPILER=$CPATH/clang -DCMAKE_CXX_COMPILER=$CPATH/clang++ \
     -DLLVM_USE_LINKER=lld -DCMAKE_INSTALL_PREFIX=${TOPLEV}/stage3/install
 
-perf record -e cycles:u -j any,u -- ninja clang
+perf record -e cycles:u -j any,u -- ninja
 
 echo "Converting profile to a more aggreated form suitable to be consumed by BOLT"
 
