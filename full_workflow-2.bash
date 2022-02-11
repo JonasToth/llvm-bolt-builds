@@ -12,6 +12,7 @@ git clone https://github.com/llvm/llvm-project.git
 echo "Building Stage 1 Compiler"
 
 mkdir ${TOPLEV}/stage1
+cd ${TOPLEV}/stage1
 
 cmake -G Ninja ${TOPLEV}/llvm-project/llvm -DLLVM_TARGETS_TO_BUILD=X86 \
       -DCMAKE_BUILD_TYPE=Release \
