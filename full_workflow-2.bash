@@ -1,5 +1,7 @@
 #!/bin/bash
 
+jobs="$(echo $(( $(nproc) * 3/4 )) | cut -d '.' -f1)"
+
 export TOPLEV=~/llvm-bolt/
 
 mkdir ${TOPLEV}
@@ -34,6 +36,7 @@ cmake -G Ninja ${TOPLEV}/llvm-project/llvm -DLLVM_TARGETS_TO_BUILD=X86 \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_C_COMPILER=$CPATH/clang -DCMAKE_CXX_COMPILER=$CPATH/clang++ \
     -DLLVM_ENABLE_PROJECTS="clang;lld" \
+	-DLLVM_PARALLEL_LINK_JOBS="$(jobs)" \
     -DLLVM_USE_LINKER=lld -DLLVM_BUILD_INSTRUMENTED=ON \
     -DCMAKE_INSTALL_PREFIX=${TOPLEV}/stage2-prof-gen/install
 ninja install
@@ -49,6 +52,7 @@ cmake -G Ninja ${TOPLEV}/llvm-project/llvm -DLLVM_TARGETS_TO_BUILD=X86 \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_C_COMPILER=$CPATH/clang -DCMAKE_CXX_COMPILER=$CPATH/clang++ \
     -DLLVM_ENABLE_PROJECTS="clang" \
+	-DLLVM_PARALLEL_LINK_JOBS="$(jobs)" \
     -DLLVM_USE_LINKER=lld -DCMAKE_INSTALL_PREFIX=${TOPLEV}/stage3-train/install
 ninja clang
 
@@ -70,7 +74,8 @@ cmake -G Ninja ${TOPLEV}/llvm-project/llvm -DLLVM_TARGETS_TO_BUILD=X86 \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_C_COMPILER=$CPATH/clang -DCMAKE_CXX_COMPILER=$CPATH/clang++ \
     -DLLVM_ENABLE_PROJECTS="clang;lld" \
-    -DLLVM_ENABLE_LTO=Full \
+    -DLLVM_ENABLE_LTO=Thin \
+	-DLLVM_PARALLEL_LINK_JOBS="$(jobs)" \
     -DLLVM_PROFDATA_FILE=${TOPLEV}/stage2-prof-gen/profiles/clang.profdata \
     -DLLVM_USE_LINKER=lld \
     -DCMAKE_INSTALL_PREFIX=${TOPLEV}/stage2-prof-use-lto/install
