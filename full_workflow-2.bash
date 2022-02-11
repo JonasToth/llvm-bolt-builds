@@ -96,7 +96,7 @@ perf record -e cycles:u -j any,u -- ninja clang
 
 echo "Converting profile to a more aggreated form suitable to be consumed by BOLT"
 
-perf2bolt $CPATH/clang-7 -p perf.data -o clang-15.fdata -w clang-15.yaml
+perf2bolt $CPATH/clang-15 -p perf.data -o clang-15.fdata -w clang-15.yaml
 
 echo "Optimizing Clang with the generated profile"
 
@@ -106,15 +106,15 @@ llvm-bolt $CPATH/clang-15 -o $CPATH/clang-15.bolt -b clang-15.yaml \
     
 echo "Mooving orginal binary and linking bolted one"
 
-mv $CPATH/clang-7 $CPATH/clang-7.org
+mv $CPATH/clang-15 $CPATH/clang-15.org
 
-ln -fs $CPATH/clang-7.bolt $CPATH/clang-7
+ln -fs $CPATH/clang-15.bolt $CPATH/clang-15
 
 
 ## Optional measuring performance difference between the bolted binary and the LTO+PGO builded binary
 
-# ln -fs $CPATH/clang-7.org $CPATH/clang-7
+# ln -fs $CPATH/clang-15.org $CPATH/clang-15
 # ninja clean && time ninja clang -j$(nproc)
 
-# ln -fs $CPATH/clang-7.bolt $CPATH/clang-7
+# ln -fs $CPATH/clang-15.bolt $CPATH/clang-15
 # ninja clean && time ninja clang -j$(nproc)
