@@ -96,6 +96,8 @@ perf record -e cycles:u -j any,u -- ninja
 
 echo "Converting profile to a more aggreated form suitable to be consumed by BOLT"
 
+export ${TOPLEV}/stage1/install/bin/:${PATH}
+
 perf2bolt $CPATH/clang-15 -p perf.data -o clang-15.fdata -w clang-15.yaml
 
 echo "Optimizing Clang with the generated profile"
