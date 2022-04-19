@@ -1,9 +1,5 @@
 #!/bin/bash
 
-export TOPLEV=~/toolchain/llvm
-mkdir ~/toolchain/llvm
-cd ${TOPLEV}
-
 echo "Cloning llvm-project release/14.x"
 
 ./setup_llvm_repo.bash || (echo "Setting up mono-repo failed!"; exit 1)
@@ -18,7 +14,7 @@ echo "  Rebuild LLVM with instrumented stage2 -> Gather performance data that ca
 ./build_stage3-train.bash || (echo "Generating training-data failed!"; exit 1)
 
 echo " Build an optimized LLVM (PGO+LTO) with the stage1 compiler. (faster ~30%)"
-./build_stage2-prof-use-lto.bash || (echo "Building optimized LTO+PGO Stage2-Toolchain failed!"; exit 1)
+./build_stage2-prof-use-lto-reloc.bash || (echo "Building optimized LTO+PGO Stage2-Toolchain failed!"; exit 1)
 
 # If possible, measure the runtime of the optimized stage2 compiler with perf
 # and feed these measurements into BOLT, that will optimize the binary layout
