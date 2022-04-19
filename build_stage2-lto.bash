@@ -28,7 +28,7 @@ CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
 	-DLLVM_TOOL_CLANG_TOOLS_EXTRA_BUILD=OFF \
 	-DLLVM_TOOL_COMPILER_RT_BUILD=OFF \
 	-DLLVM_TOOL_LLD_BUILD=ON \
-  	../llvm-project/llvm || (echo "Could not configure project!"; exit 1)
+	../llvm-project/llvm || (echo "Could not configure project!"; exit 1)
 
 echo
 echo "== Start Build"

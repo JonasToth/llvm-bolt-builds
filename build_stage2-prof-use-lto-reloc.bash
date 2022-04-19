@@ -34,6 +34,7 @@ CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
 	-DLLVM_PROFDATA_FILE=${BASE_DIR}/stage2-prof-generate/profiles/clang.prof \
 	-DLLVM_TARGETS_TO_BUILD="all" \
 	-DLLVM_TOOL_CLANG_BUILD=ON \
+	-DCMAKE_INSTALL_PREFIX=${BASE_DIR}/stage2-prof-use-lto-reloc/install \
 	-DLLVM_TOOL_LLD_BUILD=ON \
   	../llvm-project/llvm || (echo "Could not configure project!"; exit 1)
 

@@ -22,14 +22,14 @@ CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
 	-DLLVM_ENABLE_PROJECTS="clang;lld;compiler-rt" \
 	-DLLVM_PARALLEL_COMPILE_JOBS="$(nproc)"\
 	-DLLVM_PARALLEL_LINK_JOBS="$(nproc)" \
-    -DENABLE_LINKER_BUILD_ID=ON \
+	-DENABLE_LINKER_BUILD_ID=ON \
 	-DLLVM_PROFDATA_FILE="${BASE_DIR}"/stage2-prof-generate/profiles/clang.prof \
 	-DLLVM_TARGETS_TO_BUILD="X86" \
 	-DLLVM_TOOL_CLANG_BUILD=ON \
 	-DLLVM_TOOL_CLANG_TOOLS_EXTRA_BUILD=OFF \
 	-DLLVM_TOOL_COMPILER_RT_BUILD=OFF \
 	-DLLVM_TOOL_LLD_BUILD=ON \
-  	../llvm-project/llvm || (echo "Could not configure project!"; exit 1)
+	../llvm-project/llvm || (echo "Could not configure project!"; exit 1)
 
 echo
 echo "== Start Build"

@@ -27,9 +27,10 @@ CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
 	-DLLVM_PARALLEL_COMPILE_JOBS="$(jobs)" \
 	-DLLVM_PARALLEL_LINK_JOBS="$(jobs)" \
 	-DLLVM_TOOL_CLANG_BUILD=ON \
+	-DCMAKE_INSTALL_PREFIX=${BASE_DIR}/stage3-train/install \
 	-DLLVM_TOOL_CLANG_TOOLS_EXTRA_BUILD=OFF \
 	-DLLVM_TOOL_LLD_BUILD=ON \
-  	../llvm-project/llvm  || (echo "Could not configure project!"; exit 1)
+	../llvm-project/llvm  || (echo "Could not configure project!"; exit 1)
 
 echo
 echo "== Start Build"

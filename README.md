@@ -3,7 +3,7 @@
 This set of scripts creates a 60% faster LLVM toolchain that can be customly
 trained to any project.
 
-The full_workflow.bash will autodetect, if your machine supports LBR or not and choose the correct script which suits to your hardware. 
+The full_workflow.bash will autodetect, if your machine supports LBR or not and choose the correct script which suits to your hardware.
 
 ## How to build
 

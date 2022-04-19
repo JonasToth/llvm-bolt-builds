@@ -17,13 +17,13 @@ mkdir ${TOPLEV}/stage1
 cd ${TOPLEV}/stage1
 
 cmake -G Ninja ${TOPLEV}/llvm-project/llvm -DLLVM_TARGETS_TO_BUILD=X86 \
-      -DCMAKE_BUILD_TYPE=Release \
-      -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_ASM_COMPILER=gcc \
-      -DLLVM_ENABLE_PROJECTS="clang;lld;compiler-rt;bolt" \
-      -DCOMPILER_RT_BUILD_SANITIZERS=OFF -DCOMPILER_RT_BUILD_XRAY=OFF \
-      -DCOMPILER_RT_BUILD_LIBFUZZER=OFF \
-      -DCMAKE_INSTALL_PREFIX=${TOPLEV}/stage1/install
-      
+  -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_ASM_COMPILER=gcc \
+  -DLLVM_ENABLE_PROJECTS="clang;lld;compiler-rt;bolt" \
+  -DCOMPILER_RT_BUILD_SANITIZERS=OFF -DCOMPILER_RT_BUILD_XRAY=OFF \
+  -DCOMPILER_RT_BUILD_LIBFUZZER=OFF \
+  -DCMAKE_INSTALL_PREFIX=${TOPLEV}/stage1/install
+
 ninja install
 
 echo "Building Stage 2 Compiler with Instrumentation"
@@ -33,12 +33,12 @@ cd ${TOPLEV}/stage2-prof-gen
 CPATH=${TOPLEV}/stage1/install/bin/
 
 cmake -G Ninja ${TOPLEV}/llvm-project/llvm -DLLVM_TARGETS_TO_BUILD=X86 \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_C_COMPILER=$CPATH/clang -DCMAKE_CXX_COMPILER=$CPATH/clang++ \
-    -DLLVM_ENABLE_PROJECTS="clang;lld" \
-	-DLLVM_PARALLEL_LINK_JOBS="$(jobs)" \
-    -DLLVM_USE_LINKER=lld -DLLVM_BUILD_INSTRUMENTED=ON \
-    -DCMAKE_INSTALL_PREFIX=${TOPLEV}/stage2-prof-gen/install
+  -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_C_COMPILER=$CPATH/clang -DCMAKE_CXX_COMPILER=$CPATH/clang++ \
+  -DLLVM_ENABLE_PROJECTS="clang;lld" \
+  -DLLVM_PARALLEL_LINK_JOBS="$(jobs)" \
+  -DLLVM_USE_LINKER=lld -DLLVM_BUILD_INSTRUMENTED=ON \
+  -DCMAKE_INSTALL_PREFIX=${TOPLEV}/stage2-prof-gen/install
 ninja install
 
 
@@ -49,11 +49,11 @@ cd ${TOPLEV}/stage3-train
 CPATH=${TOPLEV}/stage2-prof-gen/install/bin
 
 cmake -G Ninja ${TOPLEV}/llvm-project/llvm -DLLVM_TARGETS_TO_BUILD=X86 \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_C_COMPILER=$CPATH/clang -DCMAKE_CXX_COMPILER=$CPATH/clang++ \
-    -DLLVM_ENABLE_PROJECTS="clang" \
-	-DLLVM_PARALLEL_LINK_JOBS="$(jobs)" \
-    -DLLVM_USE_LINKER=lld -DCMAKE_INSTALL_PREFIX=${TOPLEV}/stage3-train/install
+  -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_C_COMPILER=$CPATH/clang -DCMAKE_CXX_COMPILER=$CPATH/clang++ \
+  -DLLVM_ENABLE_PROJECTS="clang" \
+  -DLLVM_PARALLEL_LINK_JOBS="$(jobs)" \
+  -DLLVM_USE_LINKER=lld -DCMAKE_INSTALL_PREFIX=${TOPLEV}/stage3-train/install
 ninja clang
 
 
@@ -71,14 +71,14 @@ CPATH=${TOPLEV}/stage1/install/bin/
 export LDFLAGS="-Wl,-q"
 
 cmake -G Ninja ${TOPLEV}/llvm-project/llvm -DLLVM_TARGETS_TO_BUILD=X86 \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_C_COMPILER=$CPATH/clang -DCMAKE_CXX_COMPILER=$CPATH/clang++ \
-    -DLLVM_ENABLE_PROJECTS="clang;lld" \
-    -DLLVM_ENABLE_LTO=Thin \
-	-DLLVM_PARALLEL_LINK_JOBS="$(jobs)" \
-    -DLLVM_PROFDATA_FILE=${TOPLEV}/stage2-prof-gen/profiles/clang.profdata \
-    -DLLVM_USE_LINKER=lld \
-    -DCMAKE_INSTALL_PREFIX=${TOPLEV}/stage2-prof-use-lto/install
+  -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_C_COMPILER=$CPATH/clang -DCMAKE_CXX_COMPILER=$CPATH/clang++ \
+  -DLLVM_ENABLE_PROJECTS="clang;lld" \
+  -DLLVM_ENABLE_LTO=Thin \
+  -DLLVM_PARALLEL_LINK_JOBS="$(jobs)" \
+  -DLLVM_PROFDATA_FILE=${TOPLEV}/stage2-prof-gen/profiles/clang.profdata \
+  -DLLVM_USE_LINKER=lld \
+  -DCMAKE_INSTALL_PREFIX=${TOPLEV}/stage2-prof-use-lto/install
 ninja install
 
 
@@ -89,8 +89,8 @@ cd ${TOPLEV}/stage3
 CPATH=${TOPLEV}/stage2-prof-use-lto/install/bin/
 
 cmake -G Ninja ${TOPLEV}/llvm-project/llvm -DLLVM_TARGETS_TO_BUILD=X86 -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_C_COMPILER=$CPATH/clang -DCMAKE_CXX_COMPILER=$CPATH/clang++ \
-    -DLLVM_USE_LINKER=lld -DCMAKE_INSTALL_PREFIX=${TOPLEV}/stage3/install
+  -DCMAKE_C_COMPILER=$CPATH/clang -DCMAKE_CXX_COMPILER=$CPATH/clang++ \
+  -DLLVM_USE_LINKER=lld -DCMAKE_INSTALL_PREFIX=${TOPLEV}/stage3/install
 
 perf record -e cycles:u -j any,u -- ninja
 
@@ -103,9 +103,9 @@ perf2bolt $CPATH/clang-15 -p perf.data -o clang-15.fdata -w clang-15.yaml
 echo "Optimizing Clang with the generated profile"
 
 llvm-bolt $CPATH/clang-15 -o $CPATH/clang-15.bolt -b clang-15.yaml \
-    -reorder-blocks=cache+ -reorder-functions=hfsort+ -split-functions=3 \
-    -split-all-cold -dyno-stats -icf=1 -use-gnu-stack
-    
+  -reorder-blocks=cache+ -reorder-functions=hfsort+ -split-functions=3 \
+  -split-all-cold -dyno-stats -icf=1 -use-gnu-stack
+
 echo "Mooving orginal binary and linking bolted one"
 
 mv $CPATH/clang-15 $CPATH/clang-15.org
