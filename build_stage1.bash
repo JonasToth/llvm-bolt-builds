@@ -28,7 +28,7 @@ CC=clang CXX=clang++ LD=lld \
 	-DCLANG_PLUGIN_SUPPORT=OFF \
 	-DLLVM_ENABLE_BINDINGS=OFF \
 	-DLLVM_ENABLE_OCAMLDOC=OFF \
-	-DCMAKE_INSTALL_PREFIX=${BASE_DIR}/stage1/install \
+	-DCMAKE_INSTALL_PREFIX="$(pwd)/install" \
 	-DLLVM_INCLUDE_DOCS=OFF \
 	-DLLVM_INCLUDE_EXAMPLES=OFF \
 	../llvm-project/llvm|| (echo "Could not configure project!"; exit 1)
