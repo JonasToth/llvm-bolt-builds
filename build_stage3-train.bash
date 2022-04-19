@@ -8,29 +8,11 @@ cd stage3-train
 
 echo "== Configure Build"
 echo "== Build with stage2-prof-generate-tools -- $CPATH"
+cmake -G Ninja ${TOPLEV}/llvm-project/llvm -DLLVM_TARGETS_TO_BUILD=X86 -DCMAKE_BUILD_TYPE=Release \
+	-DCMAKE_C_COMPILER=$CPATH/clang -DCMAKE_CXX_COMPILER=$CPATH/clang++ \
+	-DLLVM_USE_LINKER=lld -DCMAKE_INSTALL_PREFIX=${TOPLEV}/stage3/install
 
-CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
-	cmake 	-G Ninja \
-	-DBUILD_SHARED_LIBS=OFF \
-	-DCMAKE_BUILD_TYPE=Release \
-	-DCMAKE_INSTALL_PREFIX="$(pwd)/install" \
-	-DCLANG_ENABLE_ARCMT=OFF \
-	-DCLANG_ENABLE_STATIC_ANALYZER=OFF \
-	-DCLANG_PLUGIN_SUPPORT=OFF \
-	-DLLVM_ENABLE_BINDINGS=OFF \
-	-DLLVM_ENABLE_OCAMLDOC=OFF \
-	-DLLVM_INCLUDE_EXAMPLES=OFF \
-	-DLLVM_INCLUDE_TESTS=OFF \
-	-DLLVM_INCLUDE_DOCS=OFF \
-	-DCLANG_VENDOR="Clang-BOLT" \
-	-DLLVM_ENABLE_PROJECTS="clang" \
-	-DLLVM_PARALLEL_COMPILE_JOBS="$(jobs)" \
-	-DLLVM_PARALLEL_LINK_JOBS="$(jobs)" \
-	-DLLVM_TOOL_CLANG_BUILD=ON \
-	-DCMAKE_INSTALL_PREFIX=${BASE_DIR}/stage3-train/install \
-	-DLLVM_TOOL_CLANG_TOOLS_EXTRA_BUILD=OFF \
-	-DLLVM_TOOL_LLD_BUILD=ON \
-	../llvm-project/llvm  || (echo "Could not configure project!"; exit 1)
+perf record -e cycles:u -j any,u -- ninja
 
 echo
 echo "== Start Build"

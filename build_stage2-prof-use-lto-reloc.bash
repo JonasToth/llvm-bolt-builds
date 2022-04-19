@@ -1,5 +1,5 @@
 #!/bin/bash
-jobs="$(echo $(( $(nproc) * 3/4 )) | cut -d '.' -f1)"
+jobs="$(echo $(( $(nproc) * 4/4 )) | cut -d '.' -f1)"
 BASE_DIR=$(pwd)
 CPATH="$(pwd)/stage1/install/bin"
 
@@ -9,12 +9,13 @@ cd stage2-prof-use-lto-reloc
 echo "== Configure Build"
 echo "== Build with stage1-tools -- $CPATH"
 echo "== Build includes bolt-enabled relocations"
-
+export LDFLAGS="-Wl,-q"
 CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
 	cmake 	-G Ninja \
 	-DBUILD_SHARED_LIBS=OFF \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DCMAKE_INSTALL_PREFIX="$(pwd)/install" \
+  -DLLVM_HOST_TRIPLE="x86_64-pc-linux-gnu" \
 	-DCLANG_ENABLE_ARCMT=OFF \
 	-DCLANG_ENABLE_STATIC_ANALYZER=OFF \
 	-DCLANG_PLUGIN_SUPPORT=OFF \
@@ -26,7 +27,6 @@ CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
 	-DCLANG_VENDOR="Clang-BOLT" \
 	-DLLVM_ENABLE_LLD=ON \
 	-DLLVM_ENABLE_LTO=THIN \
-  -DCMAKE_EXE_LINKER_FLAGS="-Wl,--as-needed -Wl,--build-id=sha1 -Wl,--emit-relocs" \
   -DENABLE_LINKER_BUILD_ID=ON \
 	-DLLVM_ENABLE_PROJECTS="clang;lld;compiler-rt;polly" \
 	-DLLVM_PARALLEL_COMPILE_JOBS="$(jobs)" \
