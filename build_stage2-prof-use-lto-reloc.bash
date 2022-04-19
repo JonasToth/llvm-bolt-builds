@@ -1,4 +1,5 @@
 #!/bin/bash
+jobs="$(echo $(( $(nproc) * 3/4 )) | cut -d '.' -f1)"
 BASE_DIR=$(pwd)
 CPATH="$(pwd)/stage1/install/bin"
 
@@ -25,13 +26,13 @@ CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
 	-DCLANG_VENDOR="Clang-BOLT" \
 	-DLLVM_ENABLE_LLD=ON \
 	-DLLVM_ENABLE_LTO=THIN \
-    -DCMAKE_EXE_LINKER_FLAGS="-Wl,--as-needed -Wl,--build-id=sha1 -Wl,--emit-relocs" \
-    -DENABLE_LINKER_BUILD_ID=ON \
-	-DLLVM_ENABLE_PROJECTS="clang;lld" \
-	-DLLVM_PARALLEL_COMPILE_JOBS="$(nproc)"\
-	-DLLVM_PARALLEL_LINK_JOBS="$(nproc)" \
+  -DCMAKE_EXE_LINKER_FLAGS="-Wl,--as-needed -Wl,--build-id=sha1 -Wl,--emit-relocs" \
+  -DENABLE_LINKER_BUILD_ID=ON \
+	-DLLVM_ENABLE_PROJECTS="clang;lld;compiler-rt;polly" \
+	-DLLVM_PARALLEL_COMPILE_JOBS="$(jobs)" \
+	-DLLVM_PARALLEL_LINK_JOBS="$(jobs)" \
 	-DLLVM_PROFDATA_FILE=${BASE_DIR}/stage2-prof-generate/profiles/clang.prof \
-	-DLLVM_TARGETS_TO_BUILD="X86" \
+	-DLLVM_TARGETS_TO_BUILD="all" \
 	-DLLVM_TOOL_CLANG_BUILD=ON \
 	-DLLVM_TOOL_LLD_BUILD=ON \
   	../llvm-project/llvm || (echo "Could not configure project!"; exit 1)

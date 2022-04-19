@@ -1,5 +1,5 @@
 #!/bin/bash
-
+jobs="$(echo $(( $(nproc) * 3/4 )) | cut -d '.' -f1)"
 BASE_DIR=$(pwd)
 STAGE_ONE="$(pwd)/stage1/install/bin"
 CPATH="$(pwd)/stage2-prof-use-lto-reloc/install/bin"
