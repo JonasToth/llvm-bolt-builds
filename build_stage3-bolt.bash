@@ -11,12 +11,12 @@ CPATH=${TOPLEV}/stage2-prof-use-lto/install/bin/
 echo "== Configure Build"
 echo "== Build with stage2-prof-use-tools -- $CPATH"
 
-cmake -G Ninja ../llvm-project/llvm -DCMAKE_BUILD_TYPE=Release \
+cmake -G Ninja ../llvm-project/llvm -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_PROJECTS="clang \
 	-DCMAKE_C_COMPILER=$CPATH/clang -DCMAKE_CXX_COMPILER=$CPATH/clang++ \
 	-DLLVM_USE_LINKER=lld -DCMAKE_INSTALL_PREFIX=${TOPLEV}/stage3/install
 
 echo "== Start Training Build"
-perf record -o ../perf.data -e cycles:u -j any,u -- ninja || (echo "Could not build project for training!"; exit 1)
+perf record -o ../perf.data -e cycles:u -j any,u -- ninja clang || (echo "Could not build project for training!"; exit 1)
 
 sleep 30s
 

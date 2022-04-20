@@ -18,7 +18,7 @@ CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
 cmake -G Ninja ${TOPLEV}/llvm-project/llvm -DLLVM_TARGETS_TO_BUILD="all" \
   -DCMAKE_BUILD_TYPE=Release \
   -DCMAKE_C_COMPILER=$CPATH/clang -DCMAKE_CXX_COMPILER=$CPATH/clang++ \
-  -DLLVM_ENABLE_PROJECTS="clang;lld;compiler-rt;polly" \
+  -DLLVM_ENABLE_PROJECTS="clang;lld" \
   -DLLVM_ENABLE_LTO=Thin \
   -DLLVM_PARALLEL_LINK_JOBS="$(jobs)" \
   -DLLVM_PROFDATA_FILE=${TOPLEV}/stage2-prof-gen/profiles/clang.profdata \
