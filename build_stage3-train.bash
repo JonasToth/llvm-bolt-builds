@@ -1,6 +1,6 @@
 #!/bin/bash
 
-jobs="$(echo $(( $(nproc) * 3/4 )) | cut -d '.' -f1)"
+jobs="$(echo $(( $(nproc) * 4/4 )) | cut -d '.' -f1)"
 export TOPLEV=~/toolchain/llvm
 cd ${TOPLEV}
 

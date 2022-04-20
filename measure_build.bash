@@ -24,7 +24,6 @@ CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
   -DLLVM_ENABLE_PROJECTS="clang" \
   -DLLVM_PARALLEL_COMPILE_JOBS="$(nproc)"\
   -DLLVM_PARALLEL_LINK_JOBS="$(nproc)" \
-  -DLLVM_TARGETS_TO_BUILD="X86" \
   ../llvm-project/llvm || (echo "Could not configure project!"; exit 1)
 
 echo

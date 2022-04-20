@@ -22,7 +22,7 @@ sleep 30s
 
 cd ..
 
-export ${TOPLEV}/stage1/install/bin/:${PATH}
+export PATH=${TOPLEV}/stage1/install/bin:${PATH}
 
 echo "Converting profile to a more aggreated form suitable to be consumed by BOLT"
 

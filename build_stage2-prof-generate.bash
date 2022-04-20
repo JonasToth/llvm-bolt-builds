@@ -1,6 +1,6 @@
 #!/bin/bash
 
-jobs="$(echo $(( $(nproc) * 3/4 )) | cut -d '.' -f1)"
+jobs="$(echo $(( $(nproc) * 4/4 )) | cut -d '.' -f1)"
 export TOPLEV=~/toolchain/llvm
 cd ${TOPLEV}
 
@@ -13,8 +13,8 @@ echo "== Build with stage1-tools -- $CPATH"
 
 cmake -G Ninja ${TOPLEV}/llvm-project/llvm -DLLVM_TARGETS_TO_BUILD="all" \
   -DCMAKE_C_COMPILER=$CPATH/clang -DCMAKE_CXX_COMPILER=$CPATH/clang++ \
-  -DLLVM_ENABLE_PROJECTS="clang;lld" \
-  -DLLVM_PARALLEL_LINK_JOBS="$(jobs)" \
+  -DLLVM_ENABLE_PROJECTS="clang;lld;compiler-rt" -DCMAKE_BUILD_TYPE=Release \
+  -DLLVM_PARALLEL_LINK_JOBS="$(jobs)" -DLLVM_PARALLEL_COMPILE_JOBS="$(jobs)"   \
   -DLLVM_USE_LINKER=lld -DLLVM_BUILD_INSTRUMENTED=IR -DLLVM_BUILD_RUNTIME=No \
   -DCMAKE_INSTALL_PREFIX=${TOPLEV}/stage2-prof-gen/install || (echo "Could not configure project!"; exit 1)
 

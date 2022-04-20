@@ -20,7 +20,9 @@ cmake -G Ninja ${TOPLEV}/llvm-project/llvm -DLLVM_TARGETS_TO_BUILD="all" \
   -DCMAKE_C_COMPILER=$CPATH/clang -DCMAKE_CXX_COMPILER=$CPATH/clang++ \
   -DLLVM_ENABLE_PROJECTS="clang;lld" \
   -DLLVM_ENABLE_LTO=Thin \
-  -DLLVM_PARALLEL_LINK_JOBS="$(jobs)" \
+  -DCMAKE_EXE_LINKER_FLAGS="-Wl,--as-needed -Wl,--build-id=sha1 -Wl,--emit-relocs" \
+   -DENABLE_LINKER_BUILD_ID=ON \
+  -DLLVM_PARALLEL_LINK_JOBS="$(jobs)" -DLLVM_PARALLEL_COMPILE_JOBS="$(jobs)" \
   -DLLVM_PROFDATA_FILE=${TOPLEV}/stage2-prof-gen/profiles/clang.profdata \
   -DLLVM_USE_LINKER=lld \
   -DCMAKE_INSTALL_PREFIX=${TOPLEV}/stage2-prof-use-lto/install || (echo "Could not configure project!"; exit 1)

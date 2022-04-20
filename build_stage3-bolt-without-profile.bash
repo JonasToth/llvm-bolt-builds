@@ -3,7 +3,7 @@ CPATH="$(pwd)/stage2-prof-use-lto-reloc/install/bin"
 export TOPLEV=~/toolchain/llvm
 CPATH=${TOPLEV}/stage2-prof-use-lto/install/bin/
 
-export ${TOPLEV}/stage1/install/bin/:${PATH}
+export PATH=${TOPLEV}/stage1/install/bin:${PATH}
 
 echo "Bolting Clang"
 
