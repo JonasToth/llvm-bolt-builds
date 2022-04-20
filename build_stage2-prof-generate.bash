@@ -12,7 +12,6 @@ echo "== Configure Build"
 echo "== Build with stage1-tools -- $CPATH"
 
 cmake -G Ninja ${TOPLEV}/llvm-project/llvm -DLLVM_TARGETS_TO_BUILD="all" \
-  -DCMAKE_BUILD_TYPE=Release -DCLANG_TABLEGEN=$CPATH/clang-tblgen -DLLVM_TABLEGEN=$CPATH/llvm-tblegen \
   -DCMAKE_C_COMPILER=$CPATH/clang -DCMAKE_CXX_COMPILER=$CPATH/clang++ \
   -DLLVM_ENABLE_PROJECTS="clang;lld;compiler-rt;polly" \
   -DLLVM_PARALLEL_LINK_JOBS="$(jobs)" \
