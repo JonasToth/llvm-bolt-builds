@@ -11,12 +11,12 @@ CPATH=${TOPLEV}/stage1/install/bin/
 echo "== Configure Build"
 echo "== Build with stage1-tools -- $CPATH"
 
-cmake -G Ninja ${TOPLEV}/llvm-project/llvm -DLLVM_TARGETS_TO_BUILD=X86 \
-  -DCMAKE_BUILD_TYPE=Release \
+cmake -G Ninja ${TOPLEV}/llvm-project/llvm -DLLVM_TARGETS_TO_BUILD="all" \
+  -DCMAKE_BUILD_TYPE=Release -DCLANG_TABLEGEN=$CPATH/clang-tblgen -DLLVM_TABLEGEN=$CPATH/llvm-tblegen \
   -DCMAKE_C_COMPILER=$CPATH/clang -DCMAKE_CXX_COMPILER=$CPATH/clang++ \
-  -DLLVM_ENABLE_PROJECTS="clang;lld" \
+  -DLLVM_ENABLE_PROJECTS="clang;lld;compiler-rt;polly" \
   -DLLVM_PARALLEL_LINK_JOBS="$(jobs)" \
-  -DLLVM_USE_LINKER=lld -DLLVM_BUILD_INSTRUMENTED=ON \
+  -DLLVM_USE_LINKER=lld -DLLVM_BUILD_INSTRUMENTED=IR -DLLVM_BUILD_RUNTIME=No \
   -DCMAKE_INSTALL_PREFIX=${TOPLEV}/stage2-prof-gen/install || (echo "Could not configure project!"; exit 1)
 
 echo "== Start Build"

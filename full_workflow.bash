@@ -4,7 +4,7 @@ export TOPLEV=~/toolchain/llvm
 mkdir ~/toolchain/llvm
 cd ${TOPLEV}
 
-echo "Cloning llvm-project release/14.x"
+echo "Cloning llvm-project"
 
 ./setup_llvm_repo.bash || (echo "Setting up mono-repo failed!"; exit 1)
 

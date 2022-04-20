@@ -10,7 +10,7 @@ CPATH=${TOPLEV}/stage2-prof-gen/install/bin
 
 echo "Generating Profile for PGO"
 
-cmake -G Ninja ${TOPLEV}/llvm-project/llvm -DLLVM_TARGETS_TO_BUILD=X86 \
+cmake -G Ninja ${TOPLEV}/llvm-project/llvm -DLLVM_TARGETS_TO_BUILD="all" \
   -DCMAKE_BUILD_TYPE=Release \
   -DCMAKE_C_COMPILER=$CPATH/clang -DCMAKE_CXX_COMPILER=$CPATH/clang++ \
   -DLLVM_ENABLE_PROJECTS="clang" \

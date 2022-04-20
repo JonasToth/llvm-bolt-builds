@@ -11,7 +11,7 @@ CPATH=${TOPLEV}/stage2-prof-use-lto/install/bin/
 echo "== Configure Build"
 echo "== Build with stage2-prof-use-tools -- $CPATH"
 
-cmake -G Ninja ../llvm-project/llvm  -DLLVM_TARGETS_TO_BUILD=X86 -DCMAKE_BUILD_TYPE=Release \
+cmake -G Ninja ../llvm-project/llvm -DCMAKE_BUILD_TYPE=Release \
 	-DCMAKE_C_COMPILER=$CPATH/clang -DCMAKE_CXX_COMPILER=$CPATH/clang++ \
 	-DLLVM_USE_LINKER=lld -DCMAKE_INSTALL_PREFIX=${TOPLEV}/stage3/install
 
