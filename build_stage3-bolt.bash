@@ -24,7 +24,7 @@ cmake -G Ninja \
 	../llvm-project/llvm || (echo "Could not configure project!"; exit 1)
 
 echo "== Start Training Build"
-perf record -o ../perf.data -e cycles:u -j any,u -- ninja clang || (echo "Could not build project for training!"; exit 1)
+perf record -o ../perf.data -c 2500 -e cycles:u -j any,u -- ninja clang || (echo "Could not build project for training!"; exit 1)
 
 sleep 30s
 
