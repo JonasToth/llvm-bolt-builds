@@ -29,18 +29,19 @@ cmake -G Ninja ../llvm-project/llvm
 	-DLLVM_TARGETS_TO_BUILD="X86" \
 	-DCMAKE_C_COMPILER=$CPATH/clang.inst \
 	-DCMAKE_CXX_COMPILER=$CPATH/clang++ \
-	-DLLVM_USE_LINKER=lld -DCMAKE_INSTALL_PREFIX=${TOPLEV}/stage3/install
+	-DLLVM_USE_LINKER=lld -DCMAKE_INSTALL_PREFIX=${TOPLEV}/stage3-without-sampling/install
 
 echo "== Start Training Build"
 ninja clang || (echo "Could not build project for training!"; exit 1)
 
 echo "Merging generated profiles"
-export PATH=${TOPLEV}/stage1/install/bin:${PATH}
+export PATH=${TOPLEV}/stage1/bin:${PATH}
+cd ${TOPLEV}/stage3-without-sampling
 merge-fdata *.fdata > combined.fdata
 echo "Optimizing Clang with the generated profile"
 
 llvm-bolt ${CPATH}/clang-15 \
-	--data clang-15.fdata \
+	--data combined.fdata \
 	-o ${CPATH}/clang-15.bolt \
 	-reorder-blocks=cache+ \
 	-reorder-functions=hfsort+ \
