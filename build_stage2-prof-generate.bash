@@ -10,7 +10,7 @@ CPATH=${TOPLEV}/stage1/bin
 echo "== Configure Build"
 echo "== Build with stage1-tools -- $CPATH"
 
-cmake -G Ninja ${TOPLEV}/llvm-project/llvm
+cmake -G Ninja ${TOPLEV}/llvm-project/llvm \
     -DLLVM_TARGETS_TO_BUILD=host \
     -DCLANG_ENABLE_ARCMT=OFF \
     -DCLANG_ENABLE_STATIC_ANALYZER=OFF \
@@ -19,7 +19,7 @@ cmake -G Ninja ${TOPLEV}/llvm-project/llvm
     -DLLVM_ENABLE_OCAMLDOC=OFF \
     -DLLVM_INCLUDE_DOCS=OFF \
     -DLLVM_INCLUDE_EXAMPLES=OFF \
-    -DCMAKE_AR=$CPATH/llvm-ar \
+    -DCMAKE_AR=llvm-ar \
     -DCMAKE_C_COMPILER=$CPATH/clang \
     -DCLANG_TABLEGEN=$CPATH/clang-tblgen \
     -DCMAKE_CXX_COMPILER=$CPATH/clang++ \

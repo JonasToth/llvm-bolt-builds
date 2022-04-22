@@ -1,13 +1,13 @@
 #!/bin/bash
 
 export TOPLEV=~/toolchain/llvm
-cd ${TOPLEV}
+cd ${TOPLEV} || (echo "Could not enter ${TOPLEV} directory"; exit 1)
 
 mkdir -p stage1 || (echo "Could not create stage1 directory"; exit 1)
-cd stage1
+cd stage1 || (echo "Could not enter stage 1 directory"; exit 1)
 
 echo "== Configure Build"
-echo "== Build with stage1-tools -- $CPATH"
+echo "== Build with system clang"
 
 cmake -G Ninja ${TOPLEV}/llvm-project/llvm \
 	-DCMAKE_BUILD_TYPE=Release \

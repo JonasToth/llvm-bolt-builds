@@ -3,29 +3,28 @@
 export TOPLEV=~/toolchain/llvm
 cd ${TOPLEV}
 
-mkdir ${TOPLEV}/stage3-without-sampling  || (echo "Could not create stage3-bolt directory"; exit 1)
-mkdir ${TOPLEV}/stage3-without-sampling/intrumentdata
+mkdir -p ${TOPLEV}/stage3-without-sampling/intrumentdata || (echo "Could not create stage3-bolt directory"; exit 1)
 cd ${TOPLEV}/stage3-without-sampling
 CPATH=${TOPLEV}/stage2-prof-use-lto/install/bin
 
 export PATH=${TOPLEV}/stage1/bin:${PATH}
 
 
-echo "Instrument clang"
+echo "Instrument clang with llvm-bolt"
+
 llvm-bolt \
---instrument \
----instrumentation-file-append-pid \
---instrumentation-file=${TOPLEV}/stage3-without-sampling/intrumentdata/clang-15.fdata \
--o ${CPATH}/clang-15.inst
+	--instrument \
+	---instrumentation-file-append-pid \
+	--instrumentation-file=${TOPLEV}/stage3-without-sampling/intrumentdata/clang-15.fdata \
+	-o ${CPATH}/clang-15.inst
 
 echo "== Configure Build"
-echo "== Build with stage2-prof-use-lto -- $CPATH"
+echo "== Build with stage2-prof-use-lto instrumented clang -- $CPATH"
 
 export PATH=${CPATH}:${PATH}
 
-cmake -G Ninja ../llvm-project/llvm
+cmake -G Ninja ../llvm-project/llvm \
 	-DCMAKE_BUILD_TYPE=Release \
-	-DLLVM_ENABLE_PROJECTS="clang"
 	-DLLVM_TARGETS_TO_BUILD="X86" \
 	-DCMAKE_C_COMPILER=$CPATH/clang.inst \
 	-DCMAKE_CXX_COMPILER=$CPATH/clang++ \
