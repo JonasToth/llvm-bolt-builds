@@ -1,12 +1,12 @@
 #!/bin/bash
 
-if [ $# -ne 1 ]; then
-  echo "Usage: $0 <PATH-TO-COMPILER-INSTALL-BIN>"
-  echo "Example: $0 \"\$(pwd)/stage1/install/bin\""
-  exit 1
-fi
+export TOPLEV=~/toolchain/llvm
 
-CPATH="$1"
+Change your compiler PATH here to compare them
+
+COMPIlER_PATH=${TOPLEV}/stage2-prof-use-lto/install/bin
+
+export PATH=${COMPIlER_PATH}:${PATH}
 
 mkdir -p measure-build-time || (echo "Could not create build-directory!"; exit 1)
 cd measure-build-time
@@ -15,12 +15,13 @@ rm -r *
 
 echo "== Configure reference Clang-build with tools from ${CPATH}"
 
-CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
   cmake 	-G Ninja \
   -DBUILD_SHARED_LIBS=OFF \
   -DCMAKE_BUILD_TYPE=Release \
   -DCMAKE_INSTALL_PREFIX="$(pwd)/install" \
-  -DLLVM_ENABLE_LLD=ON \
+  -DCMAKE_C_COMPILER=${COMPIlER_PATH}/clang \
+  -DCMAKE_CXX_COMPILER=${COMPIlER_PATH}/clang++ \
+  -DLLVM_USE_LINKER=${COMPIlER_PATH}/lld \
   -DLLVM_ENABLE_PROJECTS="clang" \
   -DLLVM_PARALLEL_COMPILE_JOBS="$(nproc)"\
   -DLLVM_PARALLEL_LINK_JOBS="$(nproc)" \
