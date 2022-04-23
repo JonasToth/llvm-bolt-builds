@@ -14,14 +14,9 @@ echo "== Build with stage2-prof-use-tools -- $CPATH"
 cmake -G Ninja \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DCMAKE_INSTALL_PREFIX="$(pwd)/install" \
-	-DCMAKE_C_COMPILER=clang \
-	-DCMAKE_CXX_COMPILER=clang++ \
 	-DCMAKE_C_COMPILER=$CPATH/clang \
-  -DCLANG_TABLEGEN=$CPATH/clang-tblgen \
   -DCMAKE_CXX_COMPILER=$CPATH/clang++ \
   -DLLVM_USE_LINKER=$CPATH/ld.lld \
-  -DLLVM_TABLEGEN=$CPATH/llvm-tblgen \
-  -DCMAKE_RANLIB=$CPATH/llvm-ranlib \
 	-DLLVM_TARGETS_TO_BUILD="X86" \
 	-DLLVM_ENABLE_PROJECTS="clang" \
 	-DLLVM_PARALLEL_COMPILE_JOBS="$(nproc)"\
@@ -29,7 +24,7 @@ cmake -G Ninja \
 	../llvm-project/llvm || (echo "Could not configure project!"; exit 1)
 
 echo "== Start Training Build"
-perf record -o ../perf.data -c 2500 -e cycles:u -j any,u -- ninja clang || (echo "Could not build project for training!"; exit 1)
+perf record -o ../perf.data --max-size=15G -c 2000 -e cycles:u -j any,u -- ninja clang || (echo "Could not build project for training!"; exit 1)
 
 sleep 30s
 
