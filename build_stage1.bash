@@ -10,6 +10,7 @@ echo "== Configure Build"
 echo "== Build with system clang"
 
 cmake -G Ninja ${TOPLEV}/llvm-project/llvm \
+    -DLLVM_BINUTILS_INCDIR=/usr/include \
     -DCMAKE_BUILD_TYPE=Release \
     -DCLANG_ENABLE_ARCMT=OFF \
     -DCLANG_ENABLE_STATIC_ANALYZER=OFF \
@@ -22,11 +23,7 @@ cmake -G Ninja ${TOPLEV}/llvm-project/llvm \
     -DCMAKE_CXX_COMPILER=clang++ \
     -DLLVM_USE_LINKER=lld \
     -DLLVM_ENABLE_PROJECTS="clang;lld;bolt;compiler-rt" \
-    -DCOMPILER_RT_BUILD_LIBFUZZER=OFF \
-    -DCOMPILER_RT_BUILD_CRT=OFF \
-    -DCOMPILER_RT_BUILD_XRAY=OFF \
-    -DCOMPILER_RT_BUILD_SANITIZERS=OFF \
-    -DLLVM_TARGETS_TO_BUILD=host \
+    -DLLVM_TARGETS_TO_BUILD="X86" \
     -DCMAKE_BUILD_TYPE=Release \
     -DLLVM_BUILD_UTILS=OFF \
     -DLLVM_ENABLE_BACKTRACES=OFF \
