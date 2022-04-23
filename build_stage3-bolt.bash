@@ -16,7 +16,12 @@ cmake -G Ninja \
 	-DCMAKE_INSTALL_PREFIX="$(pwd)/install" \
 	-DCMAKE_C_COMPILER=clang \
 	-DCMAKE_CXX_COMPILER=clang++ \
-	-DLLVM_USE_LINKER=lld \
+	-DCMAKE_C_COMPILER=$CPATH/clang \
+  -DCLANG_TABLEGEN=$CPATH/clang-tblgen \
+  -DCMAKE_CXX_COMPILER=$CPATH/clang++ \
+  -DLLVM_USE_LINKER=$CPATH/ld.lld \
+  -DLLVM_TABLEGEN=$CPATH/llvm-tblgen \
+  -DCMAKE_RANLIB=$CPATH/llvm-ranlib \
 	-DLLVM_TARGETS_TO_BUILD="X86" \
 	-DLLVM_ENABLE_PROJECTS="clang" \
 	-DLLVM_PARALLEL_COMPILE_JOBS="$(nproc)"\

@@ -19,13 +19,12 @@ cmake -G Ninja ${TOPLEV}/llvm-project/llvm \
   -DLLVM_ENABLE_OCAMLDOC=OFF \
   -DLLVM_INCLUDE_DOCS=OFF \
   -DLLVM_INCLUDE_EXAMPLES=OFF \
-  -DCMAKE_AR=$CPATH/llvm-ar \
   -DCMAKE_C_COMPILER=$CPATH/clang \
   -DCLANG_TABLEGEN=$CPATH/clang-tblgen \
   -DCMAKE_CXX_COMPILER=$CPATH/clang++ \
-  -DLLVM_USE_LINKER=$CPATH/lld \
+  -DLLVM_USE_LINKER=$CPATH/ld.lld \
   -DLLVM_TABLEGEN=$CPATH/llvm-tblgen \
-  -DCMAKE_RANLIB=$CPATH/llvm-ranlib\
+  -DCMAKE_RANLIB=$CPATH/llvm-ranlib \
   -DLLVM_ENABLE_PROJECTS="clang;compiler-rt;lld;polly" \
   -DCOMPILER_RT_BUILD_LIBFUZZER=OFF \
   -DCOMPILER_RT_BUILD_CRT=OFF \

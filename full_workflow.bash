@@ -1,7 +1,6 @@
 #!/bin/bash
 
 SCRIPT_PATH=$(pwd)
-export TOPLEV=~/toolchain/llvm
 cd ${TOPLEV}
 
 echo "Cloning llvm-project"

@@ -18,7 +18,7 @@ cmake -G Ninja ${TOPLEV}/llvm-project/llvm \
   -DLLVM_INCLUDE_EXAMPLES=OFF \
   -DCMAKE_C_COMPILER=$CPATH/clang \
   -DCMAKE_CXX_COMPILER=$CPATH/clang++ \
-  -DLLVM_USE_LINKER=$CPATH/lld \
+  -DLLVM_USE_LINKER=$CPATH/ld.lld \
   -DLLVM_TABLEGEN=$CPATH/llvm-tblgen \
   -DCMAKE_RANLIB=$CPATH/llvm-ranlib \
   -DLLVM_ENABLE_PROJECTS="clang;compiler-rt;lld;polly" \

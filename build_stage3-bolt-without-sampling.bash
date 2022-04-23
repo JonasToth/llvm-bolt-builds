@@ -26,9 +26,13 @@ export PATH=${CPATH}:${PATH}
 cmake -G Ninja ../llvm-project/llvm \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DLLVM_TARGETS_TO_BUILD="X86" \
-	-DCMAKE_C_COMPILER=$CPATH/clang.inst \
-	-DCMAKE_CXX_COMPILER=$CPATH/clang++ \
-	-DLLVM_USE_LINKER=lld -DCMAKE_INSTALL_PREFIX=${TOPLEV}/stage3-without-sampling/install
+	-DCMAKE_C_COMPILER=$CPATH/clang \
+  -DCLANG_TABLEGEN=$CPATH/clang-tblgen \
+  -DCMAKE_CXX_COMPILER=$CPATH/clang++ \
+  -DLLVM_USE_LINKER=$CPATH/ld.lld \
+  -DLLVM_TABLEGEN=$CPATH/llvm-tblgen \
+  -DCMAKE_RANLIB=$CPATH/llvm-ranlib \
+  -DCMAKE_INSTALL_PREFIX=${TOPLEV}/stage3-without-sampling/install
 
 echo "== Start Training Build"
 ninja clang || (echo "Could not build project for training!"; exit 1)
