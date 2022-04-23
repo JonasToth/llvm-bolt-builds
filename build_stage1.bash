@@ -21,7 +21,6 @@ cmake -G Ninja ${TOPLEV}/llvm-project/llvm \
 	-DCMAKE_C_COMPILER=clang \
 	-DCMAKE_CXX_COMPILER=clang++ \
 	-DLLVM_USE_LINKER=lld \
-	-DCMAKE_RANLIB=llvm-ranlib \
 	-DLLVM_ENABLE_PROJECTS="clang;lld;bolt;compiler-rt" \
 	-DCOMPILER_RT_BUILD_LIBFUZZER=OFF \
 	-DCOMPILER_RT_BUILD_CRT=OFF \
