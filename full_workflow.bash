@@ -30,9 +30,9 @@ cd ${SCRIPT_PATH}
 
 perf record -e cycles:u -j any,u -- sleep 1 &>/dev/null;
 if [[ $? == "0" ]]; then
-    echo "BOLTING with Profile!"
-    ./build_stage3-bolt.bash || (echo "Optimizing Stage2-Toolchain further with llvm-bolt failed!"; exit 1)
+  echo "BOLTING with Profile!"
+  ./build_stage3-bolt.bash || (echo "Optimizing Stage2-Toolchain further with llvm-bolt failed!"; exit 1)
 else
-    echo "Optimizing Stage2-Toolchain with instrumenting"
-    ./build_stage3-bolt-without-sampling.bash || (echo "Optimizing Stage2-Toolchain with bolt failed!"; exit 1)
+  echo "Optimizing Stage2-Toolchain with instrumenting"
+  ./build_stage3-bolt-without-sampling.bash || (echo "Optimizing Stage2-Toolchain with bolt failed!"; exit 1)
 fi
