@@ -1,40 +1,40 @@
 #!/bin/bash
+export TOPLEV=~/toolchain/llvm
+cd ${TOPLEV}
 
-BASE_DIR=$(pwd)
-CPATH="$(pwd)/stage1/install/bin"
+echo "Building Clang with PGO and LTO"
 
-mkdir -p stage2-prof-use-lto || (echo "Could not create stage2-prof-use-lto directory"; exit 1)
-cd stage2-prof-use-lto
+mkdir ${TOPLEV}/stage2-prof-use-lto
+cd ${TOPLEV}/stage2-prof-use-lto
+CPATH=${TOPLEV}/stage1/bin
 
 echo "== Configure Build"
 echo "== Build with stage1-tools -- $CPATH"
 
-CC=${CPATH}/clang CXX=${CPATH}/clang++ LD=${CPATH}/lld \
-cmake 	-G Ninja \
-	-DBUILD_SHARED_LIBS=OFF \
-	-DCMAKE_BUILD_TYPE=Release \
-	-DCMAKE_INSTALL_PREFIX="$(pwd)/install" \
-	-DCLANG_ENABLE_ARCMT=OFF \
-	-DCLANG_ENABLE_STATIC_ANALYZER=OFF \
-	-DCLANG_VENDOR="LogMeIn" \
-	-DLLVM_ENABLE_LLD=ON \
-	-DLLVM_ENABLE_LTO=Full \
-	-DLLVM_ENABLE_PROJECTS="clang;lld" \
-	-DLLVM_PARALLEL_COMPILE_JOBS="$(nproc)"\
-	-DLLVM_PARALLEL_LINK_JOBS="$(nproc)" \
-	-DLLVM_POLLY_BUILD=ON \
-	-DLLVM_PROFDATA_FILE=${BASE_DIR}/stage2-prof-generate/profiles/clang.prof \
-	-DLLVM_TARGETS_TO_BUILD="X86" \
-	-DLLVM_TOOL_CLANG_BUILD=ON \
-	-DLLVM_TOOL_CLANG_TOOLS_EXTRA_BUILD=OFF \
-	-DLLVM_TOOL_COMPILER_RT_BUILD=OFF \
-	-DLLVM_TOOL_LLD_BUILD=ON \
-	../../llvm-project/llvm || (echo "Could not configure project!"; exit 1)
+cmake -G Ninja ${TOPLEV}/llvm-project/llvm \
+    -DLLVM_BINUTILS_INCDIR=/usr/include \
+    -DCLANG_ENABLE_ARCMT=OFF \
+    -DCLANG_ENABLE_STATIC_ANALYZER=OFF \
+    -DCLANG_PLUGIN_SUPPORT=OFF \
+    -DLLVM_ENABLE_BINDINGS=OFF  \
+    -DLLVM_ENABLE_OCAMLDOC=OFF \
+    -DLLVM_INCLUDE_DOCS=OFF \
+    -DLLVM_INCLUDE_EXAMPLES=OFF \
+    -DCMAKE_AR=${CPATH}/llvm-ar \
+    -DCMAKE_C_COMPILER=${CPATH}/clang \
+    -DCMAKE_CXX_COMPILER=${CPATH}/clang++ \
+    -DLLVM_USE_LINKER=${CPATH}/ld.lld \
+    -DCMAKE_RANLIB=${CPATH}/llvm-ranlib \
+    -DLLVM_ENABLE_PROJECTS="clang;lld;compiler-rt;polly" \
+    -DLLVM_TARGETS_TO_BUILD="X86" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DLLVM_ENABLE_WARNINGS=OFF \
+    -DCMAKE_INSTALL_PREFIX=${TOPLEV}/stage2-prof-use-lto/install \
+    -DLLVM_PROFDATA_FILE=${TOPLEV}/stage2-prof-gen/profiles/clang.profdata \
+    -DLLVM_ENABLE_LTO=Thin \
+    -DCMAKE_EXE_LINKER_FLAGS="-Wl,--emit-relocs" \
+    -DLLVM_ENABLE_PLUGINS=ON \
+    -DLLVM_ENABLE_TERMINFO=OFF  || (echo "Could not configure project!"; exit 1)
 
-echo
 echo "== Start Build"
-ninja || (echo "Could not build project!"; exit 1)
-
-echo
-echo "== Install to $(pwd)/install"
-ninja install || (echo "Could not install project!"; exit 1)
+ninja install || (echo "Could not build project!"; exit 1)
