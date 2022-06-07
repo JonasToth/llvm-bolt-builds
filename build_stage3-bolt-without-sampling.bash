@@ -47,12 +47,8 @@ echo "Optimizing Clang with the generated profile"
 ${BOLTPATH}/llvm-bolt ${CPATH}/clang-15.org \
     --data combined.fdata \
     -o ${CPATH}/clang-15 \
-    -reorder-blocks=ext-tsp \
-    -reorder-functions=hfsort+ \
-    -split-functions=3 \
-    -split-all-cold \
-    -dyno-stats \
-    -icf=1 \
-    -use-gnu-stack || (echo "Could not optimize binary for clang-15"; exit 1)
+	-relocs -split-functions=3 -split-all-cold -icf=1 -lite=1 \
+	-split-eh -use-gnu-stack -jump-tables=move -dyno-stats \
+	-reorder-functions=hfsort -reorder-blocks=ext-tsp -tail-duplication=cache || (echo "Could not optimize binary for cc1"; exit 1)
 
 echo "You can now use the compiler with export PATH=${CPATH}:${PATH}"
