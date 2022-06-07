@@ -8,7 +8,7 @@ mkdir -p ${TOPLEV}/bolt-gcc/intrumentdata
 mkdir -p ${TOPLEV}/bolt-gcc/intrumentdata/cc1
 mkdir -p ${TOPLEV}/bolt-gcc/intrumentdata/cc1plus
 cd ${TOPLEV}/bolt-gcc
-GCCPATH=/usr/lib/gcc/x86_64-pc-linux-gnu/13
+GCCPATH=/usr/lib/gcc/x86_64-pc-linux-gnu/12.1.1
 GCCINSTPATH=${TOPLEV}/bolt-gcc
 BOLTPATH=~/toolchain/llvm/stage1/bin
 

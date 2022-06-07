@@ -47,7 +47,7 @@ echo "Optimizing Clang with the generated profile"
 ${BOLTPATH}/llvm-bolt ${CPATH}/clang-15.org \
     --data combined.fdata \
     -o ${CPATH}/clang-15 \
-    -reorder-blocks=cache+ \
+    -reorder-blocks=ext-tsp \
     -reorder-functions=hfsort+ \
     -split-functions=3 \
     -split-all-cold \

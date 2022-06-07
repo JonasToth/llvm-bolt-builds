@@ -6,7 +6,7 @@ cd ${TOPLEV}
 
 mkdir -p ${TOPLEV}/bolt-gcc/intrumentdata || (echo "Could not create stage3-bolt directory"; exit 1)
 cd ${TOPLEV}/bolt-gcc
-GCCPATH=/usr/lib/gcc/x86_64-pc-linux-gnu/13
+GCCPATH=/usr/lib/gcc/x86_64-pc-linux-gnu/12.1.1
 GCCINSTPATH=${TOPLEV}/bolt-gcc
 BOLTPATH=~/toolchain/llvm/stage1/bin
 
@@ -22,9 +22,9 @@ echo "Optimizing cc1 with the generated profile"
 cd ${TOPLEV}/bolt-gcc/intrumentdata/cc1/
 
 ${BOLTPATH}/llvm-bolt ${GCCPATH}/cc1.org \
-    --data ${TOPLEV}/bolt-gcc/intrumentdata/cc1/cc1-combined.fdata \
+    --data /home/ptr1337/Desktop/cc1-combined.fdata \
     -o cc1 \
-    -reorder-blocks=cache+ \
+    -reorder-blocks=ext-tsp \
     -reorder-functions=hfsort+ \
     -split-functions=3 \
     -split-all-cold \
@@ -39,7 +39,7 @@ sudo mv cc1 ${GCCPATH}/cc1
 ${BOLTPATH}/llvm-bolt ${GCCPATH}/cc1plus.org \
     --data ${TOPLEV}/bolt-gcc/intrumentdata/cc1plus/cc1plus-combined.fdata \
     -o cc1plus \
-    -reorder-blocks=cache+ \
+    -reorder-blocks=ext-tsp \
     -reorder-functions=hfsort+ \
     -split-functions=3 \
     -split-all-cold \

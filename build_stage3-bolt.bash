@@ -19,10 +19,8 @@ cmake -G Ninja \
     -DCMAKE_INSTALL_PREFIX="$(pwd)/install" \
     -DCMAKE_AR=${CPATH}/llvm-ar \
     -DCMAKE_C_COMPILER=${CPATH}/clang \
-    -DCLANG_TABLEGEN=${CPATH}/clang-tblgen \
     -DCMAKE_CXX_COMPILER=${CPATH}/clang++ \
     -DLLVM_USE_LINKER=${CPATH}/ld.lld \
-    -DLLVM_TABLEGEN=${CPATH}/llvm-tblgen \
     -DCMAKE_RANLIB=${CPATH}/llvm-ranlib \
     -DLLVM_TARGETS_TO_BUILD="X86" \
     -DLLVM_ENABLE_PROJECTS="clang" \
@@ -44,7 +42,7 @@ echo "Optimizing Clang with the generated profile"
 ${BOLTPATH}/llvm-bolt ${CPATH}/clang-15 \
     -o ${CPATH}/clang-15.bolt \
     --data ${TOPLEV}/clang-15.fdata \
-    -reorder-blocks=cache+ \
+    -reorder-blocks=ext-tsp \
     -reorder-functions=hfsort+ \
     -split-functions=3 \
     -split-all-cold \
