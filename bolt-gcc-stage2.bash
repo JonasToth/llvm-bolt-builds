@@ -37,6 +37,6 @@ ${BOLTPATH}/llvm-bolt ${GCCPATH}/cc1plus.org \
     -o cc1plus \
 	-relocs -split-functions=3 -split-all-cold -icf=1 -lite=1 \
 	-split-eh -use-gnu-stack -jump-tables=move -dyno-stats \
-	-reorder-functions=hfsort -reorder-blocks=ext-tsp -tail-duplication=cache || (echo "Could not optimize binary for cc1"; exit 1)
+	-reorder-functions=hfsort -reorder-blocks=ext-tsp -tail-duplication=cache || (echo "Could not optimize binary for cc1plus"; exit 1)
 
 sudo mv cc1plus ${GCCPATH}/cc1plus
