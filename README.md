@@ -4,8 +4,9 @@ This set of scripts creates a 60% faster LLVM toolchain that can be customly
 trained to any project.
 
 The full_workflow.bash will autodetect, if your machine supports LBR or not and choose the correct script which suits to your hardware.
+## LLVM
 
-## How to build
+### How to build
 
     git clone https://github.com/ptr1337/llvm-bolt-scripts.git
     cd llvm-bolt-scripts
@@ -26,3 +27,15 @@ You can experiment with technologies, maybe `ThinLTO` is better then `FullLTO`,
 
 For the last bit of performance, you can run several different workloads and then merge the resulted profiles with 'merge-fdata \*.fdata > combined.fdata' and then optimize the libary with llvm-bolt again.
         and nothing else! The same goes for `BOLT`.
+
+# GCC
+
+If you want to bolt gcc, you need to disable when building gcc the language ```lto```, you can still use the gcc lto function but gcc itself wont build with lto. Enabling lto will crash llvm-bolt.
+
+Also you need to add following to your compileflags:
+```
+CXXFLAGS+="-fno-reorder-blocks-and-partition"
+LDFLAGS+="--emit-relocs"
+```
+
+The compileflas should be used for any binary you compile and want to optimize the binary with bolt.

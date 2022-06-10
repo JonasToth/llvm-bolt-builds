@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export TOPLEV=~/toolchain/llvm
+TOPLEV=~/toolchain/llvm
 cd ${TOPLEV} || (echo "Could not enter ${TOPLEV} directory"; exit 1)
 
 mkdir -p stage1 || (echo "Could not create stage1 directory"; exit 1)
