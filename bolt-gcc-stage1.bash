@@ -1,6 +1,6 @@
 #!/bin/bash
 
-GCCVER=12.1.1
+GCCVER=12
 TOPLEV=~/toolchain/gcc
 DATA=${TOPLEV}/instrument
 mkdir ${TOPLEV}
@@ -18,21 +18,21 @@ ${BOLTPATH}/llvm-bolt \
     --instrumentation-file-append-pid \
     --instrumentation-file=${DATA}/cc1/cc1.fdata \
     ${GCCPATH}/cc1 \
-    -o ${DATA}/cc1.inst
+    -o ${DATA}/cc1/cc1
 
 ${BOLTPATH}/llvm-bolt \
     --instrument \
     --instrumentation-file-append-pid \
-    --instrumentation-file=${DATA}/cc1/cc1.fdata \
-    ${GCCPATH}/cc1 \
-    -o ${DATA}/cc1.inst
+    --instrumentation-file=${DATA}/cc1plus/cc1plus.fdata \
+    ${GCCPATH}/cc1plus \
+    -o ${DATA}/cc1plus/cc1plus
 
 #echo "mooving instrumented binary"
 #sudo mv ${GCCPATH}/cc1 ${GCCPATH}/cc1.org
-#sudo mv ${DATA}/cc1.inst ${GCCPATH}/cc1
+#sudo mv ${DATA}/cc1/cc1 ${GCCPATH}/cc1
 #echo "mooving instrumented binary"
 #sudo mv ${GCCPATH}/cc1plus ${GCCPATH}/cc1plus.org
-#sudo mv ${DATA}/cc1plus.inst ${GCCPATH}/cc1plus
+#sudo mv ${DATA}/cc1plus/cc1plus ${GCCPATH}/cc1plus
 
 echo "Now move the binarys to the gcc path"
 echo "now do some instrument compiles for example compiling a kernel or GCC"
