@@ -53,7 +53,6 @@ ${BOLTPATH}/llvm-bolt ${GCCPATH}/cc1plus.org \
 
 
 #echo "mooving bolted binary"
-#sudo mv ${TOPLEV}/cc1 ${GCCPATH}/cc1
 #sudo mv ${TOPLEV}/cc1plus ${GCCPATH}/cc1plus
 
 echo "Now you can move the bolted binarys to your ${GCCPATH}"

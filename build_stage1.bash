@@ -22,7 +22,7 @@ cmake -G Ninja ${TOPLEV}/llvm-project/llvm \
     -DCMAKE_C_COMPILER=clang \
     -DCMAKE_CXX_COMPILER=clang++ \
     -DLLVM_USE_LINKER=lld \
-    -DLLVM_ENABLE_PROJECTS="clang;lld;bolt;compiler-rt" \
+    -DLLVM_ENABLE_PROJECTS="clang;lld;bolt" \
     -DLLVM_TARGETS_TO_BUILD="X86" \
     -DCMAKE_BUILD_TYPE=Release \
     -DLLVM_BUILD_UTILS=OFF \

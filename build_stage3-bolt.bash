@@ -32,7 +32,7 @@ cd ${TOPLEV}
 echo "Converting profile to a more aggreated form suitable to be consumed by BOLT"
 
 ${BOLTPATH}/perf2bolt ${CPATH}/clang-15 \
-    -p ${TOPLEV}perf.data \
+    -p ${TOPLEV}/perf.data \
     -o ${TOPLEV}/clang-15.fdata || (echo "Could not convert perf-data to bolt for clang-15"; exit 1)
 
 echo "Optimizing Clang with the generated profile"
