@@ -61,14 +61,18 @@ if [ ${STAGE} = 2 ]; then
     if [[ $? == "0" ]]; then
         echo "BOLTING with Profile!"
 
-        ${BOLTPATH}/llvm-bolt ${GCCPATH}/cc1.org \
+        ${BOLTPATH}/perf2bolt ${GCCPATH}/cc1.org \
             -p ${PERFDATA} \
-            -o ${DATA}/gcc.fdata || (echo "Could not convert perf-data to bolt for clang-15"; exit 1)
+            -o ${DATA}/cc1.fdata || (echo "Could not convert perf-data to bolt for clang-15"; exit 1)
+
+        ${BOLTPATH}/perf2bolt ${GCCPATH}/cc1.org \
+            -p ${PERFDATA} \
+            -o ${DATA}/cc1plus.fdata || (echo "Could not convert perf-data to bolt for clang-15"; exit 1)
 
         echo "Optimizing cc1 with the generated profile"
         cd ${TOPLEV}
         ${BOLTPATH}/llvm-bolt ${GCCPATH}/cc1.org \
-            --data ${DATA}/gcc.fdata \
+            --data ${DATA}/cc1.fdata \
             -o ${TOPLEV}/cc1 \
             -relocs \
             -split-functions=3 \
@@ -85,7 +89,7 @@ if [ ${STAGE} = 2 ]; then
 
         cd ${TOPLEV}
         ${BOLTPATH}/llvm-bolt ${GCCPATH}/cc1plus.org \
-            --data ${DATA}/gcc.fdata \
+            --data ${DATA}/cc1plus.fdata \
             -o ${TOPLEV}/cc1plus \
             -relocs \
             -split-functions=3 \
@@ -137,7 +141,7 @@ if [ ${STAGE} = 2 ]; then
             -use-gnu-stack \
             -jump-tables=move \
             -dyno-stats \
-            -reorder-functions=hfsort \
+            -reorder-functions=hfsort+ \
             -reorder-blocks=ext-tsp \
             -tail-duplication=cache || (echo "Could not optimize binary for cc1plus"; exit 1)
 

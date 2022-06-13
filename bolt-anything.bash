@@ -7,14 +7,14 @@ TOPLEV=~/toolchain/bolt
 ## PATH FOR INTRUMENTED DATA
 FDATA=${TOPLEV}/fdata
 ## file/binary you want to bolt
-BINARY=libclang.so.14.0.4
+BINARY=zstd
 ## PATH OF the binary/file
-BINARYPATH=/usr/lib
+BINARYPATH=/usr/bin
 ## PATH where the bolted binary/file can be found
 BOLTBIN=${TOPLEV}/bin
 
 # Set here the number for the script you want to use
-STAGE=1
+STAGE=
 
 mkdir -p ${FDATA}
 mkdir -p ${BOLTBIN}
@@ -67,13 +67,18 @@ optimize() {
 
 
 
-if [ "$(echo "${check_requirements}" | grep -i rela.text)" = "" ]; then
+if [ "$(echo "${check_requirements}" | grep -i rela.text)" = "rela.text" ]; then
+
+    echo "Your binary/file needs relocations, recompile it with --emit-relocs"
+
+else
 
     if [ ${STAGE} = 1 ]; then
         instrument
     fi
-    if [ ${STAGE} = 2 ]; then
-        optimize
-    fi
 
+fi
+
+if [ ${STAGE} = 2 ]; then
+    optimize
 fi
