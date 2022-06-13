@@ -96,7 +96,7 @@ if [ ${STAGE} = 2 ]; then
             -use-gnu-stack \
             -jump-tables=move \
             -dyno-stats \
-            -reorder-functions=hfsort \
+            -reorder-functions=hfsort+ \
             -reorder-blocks=ext-tsp \
             -tail-duplication=cache || (echo "Could not optimize binary for cc1plus"; exit 1)
     else
@@ -120,7 +120,7 @@ if [ ${STAGE} = 2 ]; then
             -use-gnu-stack \
             -jump-tables=move \
             -dyno-stats \
-            -reorder-functions=hfsort \
+            -reorder-functions=hfsort+ \
             -reorder-blocks=ext-tsp \
             -tail-duplication=cache || (echo "Could not optimize binary for cc1"; exit 1)
 
