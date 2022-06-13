@@ -9,7 +9,7 @@ BOLTBIN=${TOPLEV}/bin
 mkdir -p ${FDATA}
 mkdir -p ${BOLTBIN}
 
-RECORDCOMMAND="makepkg -s --skipinteg"
+COMMAND="makepkg -s --skipinteg"
 
 # Set here the number for the script you want to use
 BOLT=
@@ -18,7 +18,7 @@ BOLT=
 ##
 if [ ${BOLT} = 1 ]; then
 
-    perf record -o ${BOLTBIN}/${BINARY}-perf.data --max-size=2G -F 1500 -e cycles:u -j any,u -- ${RECORDCOMMAND}
+    perf record -o ${BOLTBIN}/${BINARY}-perf.data --max-size=2G -F 1500 -e cycles:u -j any,u -- ${COMMAND}
 
 fi
 
