@@ -1,23 +1,36 @@
 #!/bin/bash
 
-## PATH where llvm-bolt is
-BOLTPATH=~/toolchain/llvm/stage1/install/bin
-# BASEPATH
-TOPLEV=~/toolchain/bolt
-## PATH FOR INTRUMENTED DATA
-FDATA=${TOPLEV}/fdata
-## file/binary you want to bolt
-BINARY=libLLVM-14.so
-## PATH OF the binary/file
-BINARYPATH=/usr/lib
-## PATH where the bolted binary/file can be found
-BOLTBIN=${TOPLEV}/bin
-
-# Set here the number for the script you want to use
+## In the Stage 1 you will instrument the target first, then run a workload with it
+## After you got your instrumentdata ${FDATA} , you go for the second stage where the
+## optimizing process of the target will be done
 STAGE=
 
-mkdir -p ${FDATA}
-mkdir -p ${BOLTBIN}
+## File or binary you want to instrument and then bolt
+BINARY=libLLVM-14.so
+
+## PATH to the binary/file
+BINARYPATH=/usr/lib
+
+## PATH where llvm-bolt is
+BOLTPATH=~/toolchain/llvm/stage1/install/bin
+
+## Here can be the binary found when it is bolted
+BOLTBIN=${TOPLEV}/bin
+
+## BASEDIR for data,...
+TOPLEV=~/toolchain/bolt
+
+## PATH FOR INTRUMENTED DATA
+FDATA=${TOPLEV}/fdata
+
+
+
+################################################################
+
+create_path() {
+    mkdir -p ${FDATA}
+    mkdir -p ${BOLTBIN}
+}
 
 check_requirements() {
     echo "Check if relocations are in the binary"
@@ -68,9 +81,11 @@ if [ "$(echo "${check_requirements}" | grep -i rela.text)" = "rela.text" ]; then
     echo "Your binary/file needs relocations, recompile it with --emit-relocs"
 else
     if [ ${STAGE} = 1 ]; then
+        create_path
         instrument
     fi
 fi
+
 if [ ${STAGE} = 2 ]; then
     merge_fdata
     optimize
