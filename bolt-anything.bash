@@ -14,11 +14,11 @@ BINARYPATH=/usr/lib
 ## PATH where llvm-bolt is
 BOLTPATH=~/toolchain/llvm/stage1/install/bin
 
-## Here can be the binary found when it is bolted
-BOLTBIN=${TOPLEV}/bin
-
 ## BASEDIR for data,...
 TOPLEV=~/toolchain/bolt
+
+## Here can be the binary found when it is bolted
+BOLTBIN=${TOPLEV}/bin
 
 ## PATH FOR INTRUMENTED DATA
 FDATA=${TOPLEV}/fdata
