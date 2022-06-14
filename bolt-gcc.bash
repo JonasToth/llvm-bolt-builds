@@ -42,11 +42,11 @@ if [ ${STAGE} = 1 ]; then
         ${GCCPATH}/cc1plus \
         -o ${DATA}/cc1plus/cc1plus
     #echo "mooving instrumented binary"
-    #sudo mv ${GCCPATH}/cc1 ${GCCPATH}/cc1.org
-    #sudo mv ${DATA}/cc1/cc1 ${GCCPATH}/cc1
+    sudo mv ${GCCPATH}/cc1 ${GCCPATH}/cc1.org
+    sudo mv ${DATA}/cc1/cc1 ${GCCPATH}/cc1
     #echo "mooving instrumented binary"
-    #sudo mv ${GCCPATH}/cc1plus ${GCCPATH}/cc1plus.org
-    #sudo mv ${DATA}/cc1plus/cc1plus ${GCCPATH}/cc1plus
+    sudo mv ${GCCPATH}/cc1plus ${GCCPATH}/cc1plus.org
+    sudo mv ${DATA}/cc1plus/cc1plus ${GCCPATH}/cc1plus
 
     echo "Now move the binarys to the gcc path"
     echo "now do some instrument compiles for example compiling a kernel or GCC"
@@ -74,7 +74,6 @@ if [ ${STAGE} = 2 ]; then
         ${BOLTPATH}/llvm-bolt ${GCCPATH}/cc1.org \
             --data ${DATA}/cc1.fdata \
             -o ${TOPLEV}/cc1 \
-            -relocs \
             -split-functions=3 \
             -split-all-cold \
             -icf=1 \
@@ -83,7 +82,7 @@ if [ ${STAGE} = 2 ]; then
             -use-gnu-stack \
             -jump-tables=move \
             -dyno-stats \
-            -reorder-functions=hfsort \
+            -reorder-functions=hfsort+ \
             -reorder-blocks=ext-tsp \
             -tail-duplication=cache || (echo "Could not optimize binary for cc1"; exit 1)
 
@@ -91,7 +90,6 @@ if [ ${STAGE} = 2 ]; then
         ${BOLTPATH}/llvm-bolt ${GCCPATH}/cc1plus.org \
             --data ${DATA}/cc1plus.fdata \
             -o ${TOPLEV}/cc1plus \
-            -relocs \
             -split-functions=3 \
             -split-all-cold \
             -icf=1 \
@@ -146,9 +144,9 @@ if [ ${STAGE} = 2 ]; then
             -tail-duplication=cache || (echo "Could not optimize binary for cc1plus"; exit 1)
 
 
-        #echo "mooving bolted binary"
-        #sudo mv ${TOPLEV}/cc1plus ${GCCPATH}/cc1plus
-
+        echo "mooving bolted binary"
+        sudo mv ${TOPLEV}/cc1plus ${GCCPATH}/cc1plus
+		sudo mv ${TOPLEV}/cc1 ${GCCPATH}/cc1
         echo "Now you can move the bolted binarys to your ${GCCPATH}"
     fi
 

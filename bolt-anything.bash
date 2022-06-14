@@ -33,7 +33,7 @@ instrument() {
         --instrumentation-file-append-pid \
         --instrumentation-file=${FDATA}/${BINARY}.fdata \
         ${BINARYPATH}/${BINARY} \
-        -o ${BOLTBIN}/${BINARY}
+        -o ${BOLTBIN}/${BINARY} || (echo "Could not create instrumented binary"; exit 1)
 
     sudo mv ${BINARYPATH}/${BINARY} ${BINARYPATH}/${BINARY}.org
     sudo cp ${BOLTBIN}/${BINARY} ${BINARYPATH}/${BINARY}
@@ -41,20 +41,15 @@ instrument() {
 
 optimize() {
     echo "Merging generated profiles"
-    ${BOLTPATH}/merge-fdata ${FDATA}/${BINARY}*.fdata > ${BOLTBIN}/${BINARY}-combined.fdata
+    ${BOLTPATH}/merge-fdata ${FDATA}/${BINARY}*.fdata > ${BOLTBIN}/${BINARY}-combined.fdata || (echo "Could not merge fdate"; exit 1)
 
     echo "Optimizing binary with generated profile"
     ${BOLTPATH}/llvm-bolt ${BINARYPATH}/${BINARY}.org \
         --data ${BOLTBIN}/${BINARY}-combined.fdata \
         -o ${BOLTBIN}/${BINARY}.bolt \
-        -relocs \
-        -split-functions=3 \
+        -split-functions=2 \
         -split-all-cold \
-        -icf=1 \
-        -lite=1 \
         -split-eh \
-        -use-gnu-stack \
-        -jump-tables=move \
         -dyno-stats \
         -reorder-functions=hfsort \
         -reorder-blocks=ext-tsp \

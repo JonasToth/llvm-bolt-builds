@@ -24,6 +24,7 @@ cmake -G Ninja ${TOPLEV}/llvm-project/llvm \
     -DLLVM_USE_LINKER=lld \
     -DLLVM_ENABLE_PROJECTS="clang;lld;bolt" \
     -DLLVM_TARGETS_TO_BUILD="X86" \
+    -DCMAKE_EXE_LINKER_FLAGS="-Wl,--push-state -Wl,-whole-archive -ljemalloc_pic -Wl,--pop-state -lpthread -lstdc++ -lm -ldl" \
     -DCMAKE_BUILD_TYPE=Release \
     -DLLVM_BUILD_UTILS=OFF \
     -DLLVM_ENABLE_BACKTRACES=OFF \
