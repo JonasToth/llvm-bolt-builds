@@ -28,14 +28,14 @@ mkdir -p ${DATA}/cc1plus
 if [ ${STAGE} = 1 ]; then
     echo "Instrument clang with llvm-bolt"
 
-    ${BOLTPATH}/llvm-bolt \
+    LD_PRELOAD=/usr/lib/libjemalloc.so ${BOLTPATH}/llvm-bolt \
         --instrument \
         --instrumentation-file-append-pid \
         --instrumentation-file=${DATA}/cc1/cc1.fdata \
         ${GCCPATH}/cc1 \
         -o ${DATA}/cc1/cc1
 
-    ${BOLTPATH}/llvm-bolt \
+    LD_PRELOAD=/usr/lib/libjemalloc.so ${BOLTPATH}/llvm-bolt \
         --instrument \
         --instrumentation-file-append-pid \
         --instrumentation-file=${DATA}/cc1plus/cc1plus.fdata \
@@ -61,17 +61,17 @@ if [ ${STAGE} = 2 ]; then
     if [[ $? == "0" ]]; then
         echo "BOLTING with Profile!"
 
-        ${BOLTPATH}/perf2bolt ${GCCPATH}/cc1.org \
+        LD_PRELOAD=/usr/lib/libjemalloc.so ${BOLTPATH}/perf2bolt ${GCCPATH}/cc1.org \
             -p ${PERFDATA} \
             -o ${DATA}/cc1.fdata || (echo "Could not convert perf-data to bolt for clang-15"; exit 1)
 
-        ${BOLTPATH}/perf2bolt ${GCCPATH}/cc1.org \
+        LD_PRELOAD=/usr/lib/libjemalloc.so ${BOLTPATH}/perf2bolt ${GCCPATH}/cc1.org \
             -p ${PERFDATA} \
             -o ${DATA}/cc1plus.fdata || (echo "Could not convert perf-data to bolt for clang-15"; exit 1)
 
         echo "Optimizing cc1 with the generated profile"
         cd ${TOPLEV}
-        ${BOLTPATH}/llvm-bolt ${GCCPATH}/cc1.org \
+        LD_PRELOAD=/usr/lib/libjemalloc.so ${BOLTPATH}/llvm-bolt ${GCCPATH}/cc1.org \
             --data ${DATA}/cc1.fdata \
             -o ${TOPLEV}/cc1 \
             -split-functions=3 \
@@ -87,7 +87,7 @@ if [ ${STAGE} = 2 ]; then
             -tail-duplication=cache || (echo "Could not optimize binary for cc1"; exit 1)
 
         cd ${TOPLEV}
-        ${BOLTPATH}/llvm-bolt ${GCCPATH}/cc1plus.org \
+        LD_PRELOAD=/usr/lib/libjemalloc.so ${BOLTPATH}/llvm-bolt ${GCCPATH}/cc1plus.org \
             --data ${DATA}/cc1plus.fdata \
             -o ${TOPLEV}/cc1plus \
             -split-functions=3 \
@@ -110,7 +110,7 @@ if [ ${STAGE} = 2 ]; then
 
         echo "Optimizing cc1 with the generated profile"
         cd ${TOPLEV}
-        ${BOLTPATH}/llvm-bolt ${GCCPATH}/cc1.org \
+        LD_PRELOAD=/usr/lib/libjemalloc.so ${BOLTPATH}/llvm-bolt ${GCCPATH}/cc1.org \
             --data ${DATA}/cc1/cc1-combined.fdata \
             -o ${TOPLEV}/cc1 \
             -relocs \
@@ -127,7 +127,7 @@ if [ ${STAGE} = 2 ]; then
             -tail-duplication=cache || (echo "Could not optimize binary for cc1"; exit 1)
 
         cd ${TOPLEV}
-        ${BOLTPATH}/llvm-bolt ${GCCPATH}/cc1plus.org \
+        LD_PRELOAD=/usr/lib/libjemalloc.so ${BOLTPATH}/llvm-bolt ${GCCPATH}/cc1plus.org \
             --data ${DATA}/cc1plus/cc1plus-combined.fdata \
             -o ${TOPLEV}/cc1plus \
             -relocs \

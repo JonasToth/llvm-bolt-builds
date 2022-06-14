@@ -41,10 +41,10 @@ ninja & read -t 240 || kill $!
 
 echo "Merging generated profiles"
 cd ${TOPLEV}/stage3-without-sampling/intrumentdata
-${BOLTPATH}/merge-fdata *.fdata > combined.fdata
+LD_PRELOAD=/usr/lib/libjemalloc.so ${BOLTPATH}/merge-fdata *.fdata > combined.fdata
 echo "Optimizing Clang with the generated profile"
 
-${BOLTPATH}/llvm-bolt ${CPATH}/clang-15.org \
+LD_PRELOAD=/usr/lib/libjemalloc.so ${BOLTPATH}/llvm-bolt ${CPATH}/clang-15.org \
     --data combined.fdata \
     -o ${CPATH}/clang-15 \
     -relocs \
