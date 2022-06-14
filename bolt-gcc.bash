@@ -17,7 +17,7 @@ PERFDATA=/home/foo/perf.data
 ## Set here the stage you want to run
 ## STAGE 1 creates a instrumented binary, with that you need to run a workload to get profile data
 ## Stage 2 there we use llvm-bolt top optimize the binary
-STAGE=2
+STAGE=
 
 
 mkdir -p ${DATA}/cc1
@@ -146,7 +146,7 @@ if [ ${STAGE} = 2 ]; then
 
         echo "mooving bolted binary"
         sudo mv ${TOPLEV}/cc1plus ${GCCPATH}/cc1plus
-		sudo mv ${TOPLEV}/cc1 ${GCCPATH}/cc1
+        sudo mv ${TOPLEV}/cc1 ${GCCPATH}/cc1
         echo "Now you can move the bolted binarys to your ${GCCPATH}"
     fi
 
