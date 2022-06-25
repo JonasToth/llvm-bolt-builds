@@ -74,7 +74,7 @@ if [ ${STAGE} = 2 ]; then
         LD_PRELOAD=/usr/lib/libjemalloc.so ${BOLTPATH}/llvm-bolt ${GCCPATH}/cc1.org \
             --data ${DATA}/cc1.fdata \
             -o ${TOPLEV}/cc1 \
-            -split-functions=3 \
+            -split-functions \
             -split-all-cold \
             -icf=1 \
             -lite=1 \
@@ -90,7 +90,7 @@ if [ ${STAGE} = 2 ]; then
         LD_PRELOAD=/usr/lib/libjemalloc.so ${BOLTPATH}/llvm-bolt ${GCCPATH}/cc1plus.org \
             --data ${DATA}/cc1plus.fdata \
             -o ${TOPLEV}/cc1plus \
-            -split-functions=3 \
+            -split-functions \
             -split-all-cold \
             -icf=1 \
             -lite=1 \
@@ -114,7 +114,7 @@ if [ ${STAGE} = 2 ]; then
             --data ${DATA}/cc1/cc1-combined.fdata \
             -o ${TOPLEV}/cc1 \
             -relocs \
-            -split-functions=3 \
+            -split-functions \
             -split-all-cold \
             -icf=1 \
             -lite=1 \
@@ -131,7 +131,7 @@ if [ ${STAGE} = 2 ]; then
             --data ${DATA}/cc1plus/cc1plus-combined.fdata \
             -o ${TOPLEV}/cc1plus \
             -relocs \
-            -split-functions=3 \
+            -split-functions \
             -split-all-cold \
             -icf=1 \
             -lite=1 \

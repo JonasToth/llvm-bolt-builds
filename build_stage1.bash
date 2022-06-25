@@ -2,6 +2,8 @@
 
 TOPLEV=~/toolchain/llvm
 cd ${TOPLEV} || (echo "Could not enter ${TOPLEV} directory"; exit 1)
+mkdir -p ${TOPLEV}
+git clone --depth=1 https://github.com/llvm/llvm-project.git
 
 mkdir -p stage1 || (echo "Could not create stage1 directory"; exit 1)
 cd stage1 || (echo "Could not enter stage 1 directory"; exit 1)
@@ -31,10 +33,8 @@ cmake -G Ninja ${TOPLEV}/llvm-project/llvm \
     -DLLVM_ENABLE_WARNINGS=OFF \
     -DLLVM_INCLUDE_TESTS=OFF \
     -DLLVM_ENABLE_TERMINFO=OFF \
-    -DCMAKE_INSTALL_PREFIX=${TOPLEV}/stage1/install || (echo "Could not configure project!"; exit 1)
+    -DCMAKE_INSTALL_PREFIX=${TOPLEV}/llvm-bolt || (echo "Could not configure project!"; exit 1)
 
 echo "== Start Build"
-ninja || (echo "Could not build project!"; exit 1)
+ninja install || (echo "Could not build project!"; exit 1)
 
-echo "== Install to $(pwd)/install"
-ninja install || (echo "Could not install project!"; exit 1)

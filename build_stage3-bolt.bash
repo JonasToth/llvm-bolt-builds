@@ -41,7 +41,7 @@ LD_PRELOAD=/usr/lib/libjemalloc.so ${BOLTPATH}/llvm-bolt ${CPATH}/clang-15 \
     -o ${CPATH}/clang-15.bolt \
     --data ${TOPLEV}/clang-15.fdata \
     -relocs \
-    -split-functions=3 \
+    -split-functions \
     -split-all-cold \
     -icf=1 \
     -lite=1 \
