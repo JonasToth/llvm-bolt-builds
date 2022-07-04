@@ -6,7 +6,7 @@ cd ${TOPLEV}
 mkdir -p ${TOPLEV}/stage3-without-sampling/intrumentdata || (echo "Could not create stage3-bolt directory"; exit 1)
 cd ${TOPLEV}/stage3-without-sampling
 CPATH=${TOPLEV}/stage2-prof-use-lto/install/bin
-BOLTPATH=${TOPLEV}/stage1/bin
+BOLTPATH=${TOPLEV}/llvm-bolt/bin
 
 
 echo "Instrument clang with llvm-bolt"

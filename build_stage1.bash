@@ -24,7 +24,7 @@ cmake -G Ninja ${TOPLEV}/llvm-project/llvm \
     -DCMAKE_C_COMPILER=clang \
     -DCMAKE_CXX_COMPILER=clang++ \
     -DLLVM_USE_LINKER=lld \
-    -DLLVM_ENABLE_PROJECTS="clang;lld;bolt" \
+    -DLLVM_ENABLE_PROJECTS="clang;lld;bolt;compiler-rt" \
     -DLLVM_TARGETS_TO_BUILD="X86" \
     -DCMAKE_EXE_LINKER_FLAGS="-Wl,--push-state -Wl,-whole-archive -ljemalloc_pic -Wl,--pop-state -lpthread -lstdc++ -lm -ldl" \
     -DCMAKE_BUILD_TYPE=Release \
@@ -37,4 +37,3 @@ cmake -G Ninja ${TOPLEV}/llvm-project/llvm \
 
 echo "== Start Build"
 ninja install || (echo "Could not build project!"; exit 1)
-

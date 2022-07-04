@@ -5,7 +5,7 @@ cd ${TOPLEV}
 
 mkdir ${TOPLEV}/stage2-prof-gen || (echo "Could not create stage2-prof-generate directory"; exit 1)
 cd ${TOPLEV}/stage2-prof-gen
-CPATH=${TOPLEV}/stage1/bin
+CPATH=${TOPLEV}/llvm-bolt/bin
 
 echo "== Configure Build"
 echo "== Build with stage1-tools -- $CPATH"

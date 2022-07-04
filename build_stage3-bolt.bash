@@ -6,7 +6,7 @@ cd ${TOPLEV}
 mkdir ${TOPLEV}/stage3-bolt  || (echo "Could not create stage3-bolt directory"; exit 1)
 cd ${TOPLEV}/stage3-bolt
 CPATH=${TOPLEV}/stage2-prof-use-lto/install/bin
-BOLTPATH=${TOPLEV}/stage1/bin
+BOLTPATH=${TOPLEV}/llvm-bolt/bin
 
 
 

@@ -6,7 +6,7 @@ echo "Building Clang with PGO and LTO"
 
 mkdir ${TOPLEV}/stage2-prof-use-lto
 cd ${TOPLEV}/stage2-prof-use-lto
-CPATH=${TOPLEV}/stage1/bin
+CPATH=${TOPLEV}/llvm-bolt/bin
 
 echo "== Configure Build"
 echo "== Build with stage1-tools -- $CPATH"
