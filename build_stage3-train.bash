@@ -33,4 +33,4 @@ ninja || (echo "Could not build project!"; exit 1)
 echo "Merging PGO-Profiles"
 
 cd ${TOPLEV}/stage2-prof-gen/profiles
-${TOPLEV}/stage1/install/bin/llvm-profdata merge -output=clang.profdata *
+${TOPLEV}/llvm-bolt/bin/llvm-profdata merge -output=clang.profdata *
