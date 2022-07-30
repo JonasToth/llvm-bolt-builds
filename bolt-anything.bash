@@ -7,7 +7,7 @@
 STAGE=
 
 ## File or binary you want to instrument and then bolt
-BINARY=libLLVM-14.so
+${BINARY:=libLLVM-14.so}
 
 ## PATH to the target
 BINARYPATH=/usr/lib
@@ -38,15 +38,9 @@ create_path() {
     mkdir -p ${BOLTBIN}
 }
 
-check_requirements() {
-    echo "Check if relocations are in the binary"
-    readelf -p .rela.text ${BINARYPATH}/${BINARY}
-    check_reloc=$(readelf -p .rela.text ${BINARYPATH}/${BINARY} | grep ".rela.text")
-}
-
 instrument() {
-    echo "Instrument binary with llvm-bolt"
 
+    echo "Instrument binary with llvm-bolt"
     LD_PRELOAD=/usr/lib/libjemalloc.so ${BOLTPATH}/llvm-bolt \
         --instrument \
         --instrumentation-file-append-pid \
@@ -61,6 +55,7 @@ instrument() {
 }
 
 merge_fdata() {
+
     echo "Merging generated profiles"
     LD_PRELOAD=/usr/lib/libjemalloc.so ${BOLTPATH}/merge-fdata ${FDATA}/${BINARY}*.fdata > ${BOLTBIN}/${BINARY}-combined.fdata || (echo "Could not merge fdate"; exit 1)
     ## Removing not needed bloated fdata
@@ -68,6 +63,7 @@ merge_fdata() {
 }
 
 optimize() {
+
     echo "Optimizing binary with generated profile"
     LD_PRELOAD=/usr/lib/libjemalloc.so ${BOLTPATH}/llvm-bolt ${BOLTBIN}/${BINARY}.org \
         --data ${BOLTBIN}/${BINARY}-combined.fdata \
@@ -83,6 +79,7 @@ optimize() {
 }
 
 move_binary() {
+
     echo "You can find now your optimzed binary at ${BOLTBIN}"
     sudo rm -rf ${FDATA}/${BINARY}.fdata*
     sudo cp ${BOLTBIN}/${BINARY}.bolt ${BINARYPATH}/${BINARY}
