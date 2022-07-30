@@ -7,7 +7,7 @@
 STAGE=
 
 ## File or binary you want to instrument and then bolt
-${BINARY:=libLLVM-14.so}
+: ${BINARY:=libLLVM-14.so}
 
 ## PATH to the target
 BINARYPATH=/usr/lib
@@ -128,22 +128,22 @@ build_llvm_bolt ()  {
 }
 
 ## Stage 1
-if [ ${STAGE} = 1 ]; then
+if [ "${STAGE}" = 1 ]; then
     build_llvm_bolt
 fi
 
 ## Stage 2
-if [ ${STAGE} = 2 ]; then
+if [ "${STAGE}" = 2 ]; then
     create_path
     instrument
 fi
 
 ## Stage 3
-if [ ${STAGE} = 3 ]; then
+if [ "${STAGE}" = 3 ]; then
     merge_fdata
 fi
 ## Stage 4
-if [ ${STAGE} = 4 ]; then
+if [ "${STAGE}" = 4 ]; then
     optimize
     move_binary
 fi
