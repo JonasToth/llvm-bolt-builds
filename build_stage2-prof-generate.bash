@@ -1,11 +1,11 @@
 #!/bin/bash
 
-export TOPLEV=~/toolchain/llvm
+TOPLEV=~/toolchain/llvm
 cd ${TOPLEV}
 
 mkdir ${TOPLEV}/stage2-prof-gen || (echo "Could not create stage2-prof-generate directory"; exit 1)
 cd ${TOPLEV}/stage2-prof-gen
-CPATH=${TOPLEV}/stage1/bin
+CPATH=${TOPLEV}/llvm-bolt/bin
 
 echo "== Configure Build"
 echo "== Build with stage1-tools -- $CPATH"
@@ -19,12 +19,9 @@ cmake -G Ninja ${TOPLEV}/llvm-project/llvm \
     -DLLVM_ENABLE_OCAMLDOC=OFF \
     -DLLVM_INCLUDE_DOCS=OFF \
     -DLLVM_INCLUDE_EXAMPLES=OFF \
-    -DCMAKE_AR=${CPATH}/llvm-ar \
     -DCMAKE_C_COMPILER=${CPATH}/clang \
-    -DCLANG_TABLEGEN=${CPATH}/clang-tblgen \
     -DCMAKE_CXX_COMPILER=${CPATH}/clang++ \
     -DLLVM_USE_LINKER=${CPATH}/ld.lld \
-    -DCMAKE_RANLIB=${CPATH}/llvm-ranlib \
     -DLLVM_ENABLE_PROJECTS="clang;lld" \
     -DLLVM_TARGETS_TO_BUILD="X86" \
     -DCMAKE_BUILD_TYPE=Release \

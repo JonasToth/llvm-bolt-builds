@@ -1,12 +1,12 @@
 #!/bin/bash
 
-export TOPLEV=~/toolchain/llvm
+TOPLEV=~/toolchain/llvm
 cd ${TOPLEV}
 
 mkdir -p ${TOPLEV}/stage3-without-sampling/intrumentdata || (echo "Could not create stage3-bolt directory"; exit 1)
 cd ${TOPLEV}/stage3-without-sampling
 CPATH=${TOPLEV}/stage2-prof-use-lto/install/bin
-BOLTPATH=${TOPLEV}/stage1/bin
+BOLTPATH=${TOPLEV}/llvm-bolt/bin
 
 
 echo "Instrument clang with llvm-bolt"
@@ -41,18 +41,23 @@ ninja & read -t 240 || kill $!
 
 echo "Merging generated profiles"
 cd ${TOPLEV}/stage3-without-sampling/intrumentdata
-${BOLTPATH}/merge-fdata *.fdata > combined.fdata
+LD_PRELOAD=/usr/lib/libjemalloc.so ${BOLTPATH}/merge-fdata *.fdata > combined.fdata
 echo "Optimizing Clang with the generated profile"
 
-${BOLTPATH}/llvm-bolt ${CPATH}/clang-15.org \
+LD_PRELOAD=/usr/lib/libjemalloc.so ${BOLTPATH}/llvm-bolt ${CPATH}/clang-15.org \
     --data combined.fdata \
     -o ${CPATH}/clang-15 \
-    -reorder-blocks=cache+ \
-    -reorder-functions=hfsort+ \
-    -split-functions=3 \
+    -relocs \
+    -split-functions \
     -split-all-cold \
-    -dyno-stats \
     -icf=1 \
-    -use-gnu-stack || (echo "Could not optimize binary for clang-15"; exit 1)
+    -lite=1 \
+    -split-eh \
+    -use-gnu-stack \
+    -jump-tables=move \
+    -dyno-stats \
+    -reorder-functions=hfsort \
+    -reorder-blocks=ext-tsp \
+    -tail-duplication=cache || (echo "Could not optimize binary for clang"; exit 1)
 
 echo "You can now use the compiler with export PATH=${CPATH}:${PATH}"

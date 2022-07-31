@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export TOPLEV=~/toolchain/llvm
+TOPLEV=~/toolchain/llvm
 
 # Change your compiler PATH here to compare them
 
